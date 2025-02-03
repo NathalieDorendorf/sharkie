@@ -7,8 +7,14 @@ class World {
         new Endboss()
     ];
 
+    ctx;
+
+    constructor(canvas) {
+        this.ctx = canvas.getContext('2d');
+        this.draw();
+    }
 
     draw() {
-        // Draw the world
+        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
     }   
 }
