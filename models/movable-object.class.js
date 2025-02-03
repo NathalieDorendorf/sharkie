@@ -8,4 +8,29 @@ class MovableObject {
         
     }
 
+    moveLeft() {
+        console.log('moving left');
+
+    }
+
+    moveUp() {
+        console.log('moving up');
+
+    }
+
+    moveDown() {
+        console.log('moving down');
+
+    }
+
+    hurt() {
+        console.log('hurting');
+
+    }
+
+    die() {
+        console.log('dying');
+
+    }
+
 }
