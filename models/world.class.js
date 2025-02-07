@@ -19,7 +19,7 @@ class World {
         new Barrier('assets/img/3. Background/Barrier/3.png'),
     ];
     backgroundObjects = [
-        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png', 0, 230),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png', 0),
     ];
     canvas;
     ctx;
