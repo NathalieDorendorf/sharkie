@@ -19,7 +19,7 @@ class World {
         new Barrier('assets/img/3. Background/Barrier/3.png'),
     ];
     backgroundObjects = [
-        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png'),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png', 0, 230),
     ];
     canvas;
     ctx;
@@ -34,27 +34,21 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.addToMap(this.character);
-        
-        this.enemies.forEach(enemy => {
-            this.addToMap(enemy);
-        });
-
-        this.lights.forEach(light => {
-            this.addToMap(light);
-        });
-
-        this.barriers.forEach(barrier => {
-            this.addToMap(barrier);
-        });
-
-        this.backgroundObjects.forEach(background => {
-            this.addToMap(background);
-        });
+        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.lights);
+        this.addObjectsToMap(this.barriers);
+        this.addObjectsToMap(this.backgroundObjects);
 
         // draw() wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
+        });
+    }
+
+    addObjectsToMap(objects) {
+        objects.forEach(object => {
+            this.addToMap(object);
         });
     }
 
