@@ -20,9 +20,9 @@ class World {
     ];
     backgroundObjects = [
         new BackgroundObject('assets/img/3. Background/Layers/5. Water/D.png', 0),
-        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D.png', 0),
-        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D.png', 0),
-        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D1.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D1.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D1.png', 0),
     ];
     canvas;
     ctx;
