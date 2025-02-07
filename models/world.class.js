@@ -19,6 +19,9 @@ class World {
         new Barrier('assets/img/3. Background/Barrier/3.png'),
     ];
     backgroundObjects = [
+        // new BackgroundObject('assets/img/3. Background/Layers/5. Water/D.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D.png', 0),
         new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D.png', 0),
     ];
     canvas;
@@ -33,11 +36,12 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.backgroundObjects);
         this.addObjectsToMap(this.lights);
         this.addObjectsToMap(this.barriers);
-        this.addObjectsToMap(this.backgroundObjects);
+
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.enemies);
 
         // draw() wird immer wieder aufgerufen
         let self = this;
