@@ -21,6 +21,7 @@ class Character extends MovableObject {
         'assets/img/1.Sharkie/1.IDLE/17.png',
         'assets/img/1.Sharkie/1.IDLE/18.png'
     ];
+    world;
 
     constructor() {
         super().loadImage('assets/img/1.Sharkie/1.IDLE/1.png');
