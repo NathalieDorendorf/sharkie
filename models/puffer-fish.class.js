@@ -29,12 +29,14 @@ class PufferFish extends MovableObject {
 
         this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
         this.y = 100 + Math.random() * 200;
+        this.speed = 0.15 + Math.random() * 0.5;
 
         this.animate();
-        this.animateMoving();
+        // this.animateMoving();
     }
 
     animate() {
+        this.moveLeft();
         setInterval(() => {
             let index = this.currentImage % this.IMAGES_PUFFER_FISH_GREEN.length;
             let path = this.IMAGES_PUFFER_FISH_GREEN[index];
@@ -43,10 +45,10 @@ class PufferFish extends MovableObject {
         }, 250);
     }
 
-    animateMoving() {
-        setInterval(() => {
-            this.x -= Math.random() * 0.5;
-            this.y += Math.random() * 0.2;
-        }, 1000 / 60);
-    }
+    // animateMoving() {
+    //     setInterval(() => {
+    //         this.x -= Math.random() * 0.5;
+    //         this.y += Math.random() * 0.2;
+    //     }, 1000 / 60);
+    // }
 }

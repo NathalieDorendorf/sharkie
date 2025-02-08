@@ -12,6 +12,7 @@ class JellyFish extends MovableObject {
 
         this.x = 400 + Math.random() * 700;
         this.y = 100 + Math.random() * 200;
+        this.speed = 0.15 + Math.random() * 0.5;
 
         this.animate();
         this.animateMoving();
