@@ -3,6 +3,7 @@ class Character extends MovableObject {
     width = 220;
     world;
     speed = 10;
+    otherDirection = false;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -152,9 +153,11 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.world.keyboard.RIGHT) {
                 this.x += this.speed;
+                this.otherDirection = false;
             }
             if (this.world.keyboard.LEFT) {
                 this.x -= this.speed;
+                this.otherDirection = true;
             }
             if (this.world.keyboard.UP) {
                 this.y -= this.speed;
