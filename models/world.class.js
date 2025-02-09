@@ -27,6 +27,7 @@ class World {
     canvas;
     ctx;
     keyboard;
+    camera_x = -100;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -43,6 +44,8 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        this.ctx.translate(this.camera_x);
+        
         this.addObjectsToMap(this.backgroundObjects);
         this.addObjectsToMap(this.lights);
         this.addObjectsToMap(this.barriers);
@@ -65,15 +68,23 @@ class World {
 
     addToMap(movableObject) {
         if (movableObject.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(movableObject.width, 0);
-            this.ctx.scale(-1, 1);
-            movableObject.x = movableObject.x * -1;          
+            this.flipImage(movableObject);
         }
         this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
         if (movableObject.otherDirection) {
-            movableObject.x = movableObject.x * -1;
-            this.ctx.restore();
+            this.flipImageBack(movableObject);
         }
+    }
+
+    flipImage(movableObject) {
+        this.ctx.save();
+        this.ctx.translate(movableObject.width, 0);
+        this.ctx.scale(-1, 1);
+        movableObject.x = movableObject.x * -1;
+    }
+
+    flipImageBack(movableObject) {
+        movableObject.x = movableObject.x * -1;
+        this.ctx.restore();
     }
 }
