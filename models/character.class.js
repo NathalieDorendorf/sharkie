@@ -2,6 +2,7 @@ class Character extends MovableObject {
     height = 220;
     width = 220;
     world;
+    speed = 10;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -130,18 +131,48 @@ class Character extends MovableObject {
     constructor() {
         super().loadImage('assets/img/1.Sharkie/1.IDLE/1.png');
         this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_SWIM);
 
-        this.animate();
+        // this.animate();
+        this.animateMoving();
     }
 
-    animate() {
+    // animate() {
+    //     setInterval(() => {
+    //         let index = this.currentImage % this.IMAGES_IDLE.length; // let index = 0 % 18; 0, Rest 0, 0 Rest 1... 0 Rest 17, 1 Rest 0
+    //         // index = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9...
+    //         let path = this.IMAGES_IDLE[index];
+    //         this.img = this.imageCache[path];
+    //         this.currentImage++;
+    //     }, 250);
+    // }
+
+    animateMoving() {
+
         setInterval(() => {
-            let index = this.currentImage % this.IMAGES_IDLE.length; // let index = 0 % 18; 0, Rest 0, 0 Rest 1... 0 Rest 17, 1 Rest 0
-            // index = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9...
-            let path = this.IMAGES_IDLE[index];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 250);
+            if (this.world.keyboard.RIGHT) {
+                this.x += this.speed;
+            }
+            if (this.world.keyboard.LEFT) {
+                this.x -= this.speed;
+            }
+            if (this.world.keyboard.UP) {
+                this.y -= this.speed;
+            }
+            if (this.world.keyboard.DOWN) {
+                this.y += this.speed;
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+                // Swim animation
+                let index = this.currentImage % this.IMAGES_SWIM.length;
+                let path = this.IMAGES_SWIM[index];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+        }, 50);
     }
 
     attack() {
