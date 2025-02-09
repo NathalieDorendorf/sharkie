@@ -19,15 +19,34 @@ class World {
         new Barrier('assets/img/3. Background/Barrier/3.png'),
     ];
     backgroundObjects = [
-        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D2.png', -719),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D2.png', -719),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D2.png', -719),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D2.png', -719),
+
+        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D1.png', 0),
         new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D1.png', 0),
         new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D1.png', 0),
         new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D1.png', 0),
+        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D2.png', 719),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D2.png', 719),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D2.png', 719),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D2.png', 719),
+
+        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D1.png', 719 * 2),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D1.png', 719 * 2),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D1.png', 719 * 2),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D1.png', 719 * 2),
+        new BackgroundObject('assets/img/3. Background/Layers/5. Water/D2.png', 719 * 3),
+        new BackgroundObject('assets/img/3. Background/Layers/4.Fondo 2/D2.png', 719 * 3),
+        new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D2.png', 719 * 3),
+        new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D2.png', 719 * 3)
+
     ];
     canvas;
     ctx;
     keyboard;
-    camera_x = -100;
+    camera_x = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -44,7 +63,7 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.translate(this.camera_x);
+        this.ctx.translate(this.camera_x, 0);
         
         this.addObjectsToMap(this.backgroundObjects);
         this.addObjectsToMap(this.lights);
@@ -52,6 +71,8 @@ class World {
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
+
+        this.ctx.translate(-this.camera_x, 0);
 
         // draw() wird immer wieder aufgerufen
         let self = this;
