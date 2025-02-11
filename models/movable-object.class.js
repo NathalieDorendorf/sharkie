@@ -21,6 +21,13 @@ class MovableObject {
         });
     }
 
+    playAnimation(images) {
+        let index = this.currentImage % images.length;
+        let path = images[index];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     moveRight() {
         console.log('moving right');
         setInterval(() => {
