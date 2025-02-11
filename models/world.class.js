@@ -2,7 +2,7 @@ class World {
     character = new Character();
     enemies = level1.enemies;
     lights = level1.lights;
-    barriers;
+    barriers = level1.barriers;
     backgroundObjects = level1.backgroundObjects;
     canvas;
     ctx;
