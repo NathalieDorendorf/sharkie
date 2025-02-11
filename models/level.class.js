@@ -3,6 +3,7 @@ class Level {
     lights;
     barriers;
     backgroundObjects;
+    level_end_x = 1400;
 
 
     constructor(enemies, lights, barriers, backgroundObjects) {
