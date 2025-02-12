@@ -3,7 +3,6 @@ class Character extends MovableObject {
     width = 220;
     world;
     speed = 10;
-    otherDirection = false;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -130,7 +129,7 @@ class Character extends MovableObject {
 
 
     constructor() {
-        super().loadImage('assets/img/1.Sharkie/1.IDLE/1.png');
+        super().loadImage(this.IMAGES_IDLE[0]);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SWIM);
         this.loadImages(this.IMAGES_SLEEP);
@@ -143,11 +142,19 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD_ELECTRIC_SHOCK);
 
         this.animate();
+        this.moving();
+        // this.sleep();
+        // this.applyGravity();
     }
 
 
     animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_IDLE);
+        }, 250);
+    }
 
+    moving() {
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
@@ -173,8 +180,6 @@ class Character extends MovableObject {
         }, 50);
 
         setInterval(() => {
-            this.playAnimation(this.IMAGES_IDLE);
-
             if (this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_IDLE);
             }
@@ -193,7 +198,10 @@ class Character extends MovableObject {
 
     sleep() {
         console.log('sleeping');
-        
+        if (this.isAboveGround()) {
+            this.applyGravity();
+            this.playAnimation(this.IMAGES_SLEEP);
+        }
     }
     
 

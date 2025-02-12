@@ -91,7 +91,7 @@ class PufferFish extends MovableObject {
 
 
     constructor() {
-        super().loadImage('assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png');
+        super().loadImage(this.IMAGES_PUFFER_FISH_GREEN[0]);
         this.loadImages(this.IMAGES_PUFFER_FISH_GREEN);
         this.loadImages(this.IMAGES_PUFFER_FISH_YELLOW);
         this.loadImages(this.IMAGES_PUFFER_FISH_RED);
