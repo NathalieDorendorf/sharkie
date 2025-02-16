@@ -5,6 +5,8 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    // statusBar = new StatusBar();
+    throwableObjects = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -12,27 +14,26 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-    }
-
-    setWorld() {
-        this.character.world = this;
+        this.run();
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
-        
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.lights);
         this.addObjectsToMap(this.level.barriers);
+        this.addObjectsToMap(this.throwableObjects);
+
+        // this.ctx.translate(-this.camera_x, 0);
+        // this.addToMap(this.statusBar);
+        // this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-
         this.ctx.translate(-this.camera_x, 0);
 
-        // draw() wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
@@ -49,7 +50,8 @@ class World {
         if (movableObject.otherDirection) {
             this.flipImage(movableObject);
         }
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+        movableObject.draw(this.ctx);
+        movableObject.drawFrame(this.ctx);
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
         }
@@ -66,4 +68,32 @@ class World {
         movableObject.x = movableObject.x * -1;
         this.ctx.restore();
     }
+
+    setWorld() {
+        this.character.world = this;
+    }
+
+    run() {
+        setInterval(() => {
+            this.checkCollisions();
+            this.checkThrowObjects();
+        }, 200);
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBar.setPercentage(this.character.energy);
+            }
+        });
+    }
+
+    checkThrowObjects() {
+        if (this.keyboard.SPACE) {
+            let bubble = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bubble);
+        }
+    }
+
 }

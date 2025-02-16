@@ -105,7 +105,9 @@ class PufferFish extends MovableObject {
     }
 
     animate() {
-        this.moveLeft();
+        setInterval(() => {
+            this.moveLeft();
+        }, 1000 / 60);
         setInterval(() => {
             this.playAnimation(this.IMAGES_PUFFER_FISH_GREEN);
         }, 250);

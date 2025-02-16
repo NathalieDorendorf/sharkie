@@ -3,6 +3,7 @@ const level2 = new Level(
         new JellyFish(),
         new JellyFish(),
         new JellyFish(),
+        new Endboss()
     ],
     [
         new Light(),
@@ -36,6 +37,6 @@ const level2 = new Level(
         new BackgroundObject('assets/img/3. Background/Layers/3.Fondo 1/D2.png', 719 * 3),
         new BackgroundObject('assets/img/3. Background/Layers/2. Floor/D2.png', 719 * 3)
 
-    ]
-
+    ],
+    []
 );

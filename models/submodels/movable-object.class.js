@@ -1,41 +1,17 @@
-class MovableObject {
-    x = 50;
-    y = 150;
-    img;
-    height = 100;
-    width = 100;
-    imageCache = {};
-    currentImage = 0;
-    speed = 0.15;
+class MovableObject extends DrawableObject {
     otherDirection = false;
+    speed = 0.15;
     speedY = 0;
-    acceleration = 1; // Fallgeschwindigkeit
-
-
-    applyGravity() {
-        setInterval(() => {
-            if (this.isAboveGround()) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-            }
-        }, 1000 / 25);
-    }
-
-    isAboveGround() {
-        return this.y < 260;
-    }
-
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(array) {
-        array.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
+    speedX = 0;
+    acceleration = 1;
+    energy = 100;
+    lastHit = 0;
+    // offsetY;
+    offset = {
+        top: 0, // 120
+        bottom: 0, // 30
+        left: 0, // 40
+        right: 0 // 30
     }
 
     playAnimation(images) {
@@ -46,42 +22,72 @@ class MovableObject {
     }
 
     moveRight() {
-        console.log('moving right');
-        setInterval(() => {
-            this.x += this.speed;
-        }, 1000 / 60);
-
+        this.x += this.speed;
     }
 
     moveLeft() {
-        console.log('moving left');
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60);
+        this.x -= this.speed;
     }
 
     moveUp() {
-        console.log('moving up');
-        setInterval(() => {
-            this.y += this.speed;
-        }, 1000 / 60);
+        this.y += this.speed;
     }
 
     moveDown() {
-        console.log('moving down');
+        this.y -= this.speed;
+    }
+
+    applyGravity() {
         setInterval(() => {
-            this.y -= this.speed;
-        }, 1000 / 60);
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
+        }, 1000 / 25);
     }
 
-    hurt() {
-        console.log('hurting');
-
+    isAboveGround() {
+        if (this instanceof ThrowableObjects) { // ThrowableObject should always fall
+            return true;
+        } else {
+            return this.y < 180;
+        }
     }
 
-    die() {
-        console.log('dying');
+    jump() {
+        this.speedY = 20;
+    }
 
+    isColliding(object) {
+        return (this.x + this.width) >= object.x && // from right to enemy
+            this.x <= (object.x + object.width) && // from left to enemy
+            (this.y + this.height) >= object.y &&  // from top to enemy
+            this.y <= (object.y + object.height); // from bottom to enemy
+    }
+
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit; // difference in ms
+        timePassed = timePassed / 1000; // difference in s
+        return timePassed < 1;
+    }
+
+    isDead() {
+        return this.energy == 0;
     }
 
 }
+
+
+// return (this.x + this.width) >= object.x && this.x <= (object.x + object.width) &&
+//     (this.y + this.offsetY + this.height) >= object.y &&
+//     (this.y + this.offsetY) <= (object.y + object.height);      
+//     }
