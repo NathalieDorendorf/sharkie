@@ -5,7 +5,10 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    // statusBar = new StatusBar();
+    statusBarCharacter = new StatusBarCharacter();
+    statusBarCoin = new StatusBarCoin();
+    statusBarPoison = new StatusBarPoison();
+    statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -18,26 +21,38 @@ class World {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.lights);
-        this.addObjectsToMap(this.level.barriers);
-        this.addObjectsToMap(this.throwableObjects);
-
-        // this.ctx.translate(-this.camera_x, 0);
-        // this.addToMap(this.statusBar);
-        // this.ctx.translate(this.camera_x, 0);
-
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-        this.ctx.translate(-this.camera_x, 0);
+        this.clearCanvas();
+        this.drawDynamicElements();
+        this.drawStaticElements();
 
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
         });
+    }
+
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawStaticElements() {
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBarCharacter);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarPoison);
+        this.addToMap(this.statusBarEndboss);
+        this.ctx.translate(this.camera_x, 0);
+    }
+
+    drawDynamicElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.lights);
+        this.addObjectsToMap(this.level.barriers);
+        this.addObjectsToMap(this.throwableObjects);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+        this.ctx.translate(-this.camera_x, 0);
     }
 
     addObjectsToMap(objects) {
@@ -84,7 +99,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.statusBarCharacter.setPercentage(this.character.energy);
             }
         });
     }
