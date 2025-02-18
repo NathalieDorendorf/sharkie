@@ -3,6 +3,7 @@ class Character extends MovableObject {
     width = 220;
     world;
     speed = 10;
+    isDead = false;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',

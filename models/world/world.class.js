@@ -92,6 +92,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkGameOver();
         }, 200);
     }
 
@@ -109,6 +110,40 @@ class World {
             let bubble = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bubble);
         }
+    }
+
+    checkGameOver() {
+        if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
+            this.character.isDead = true;
+            this.stopGame();
+            this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
+            setTimeout(() => {
+                this.showGameOverScreen();
+            }, 3000);
+        }
+    }
+
+    stopGame() {
+        let highestId = setInterval(() => { }, 0);
+        for (let i = 1; i <= highestId; i++) {
+            clearInterval(i);
+        }
+    }
+
+    showGameOverScreen() {
+        let gameOverDiv = document.createElement('div');
+        gameOverDiv.innerHTML = `<h1>Game Over</h1>`;
+        gameOverDiv.style.position = 'absolute';
+        gameOverDiv.style.top = '50%';
+        gameOverDiv.style.left = '50%';
+        gameOverDiv.style.transform = 'translate(-50%, -50%)';
+        gameOverDiv.style.color = 'white';
+        gameOverDiv.style.fontSize = '50px';
+        gameOverDiv.style.background = 'rgba(0, 0, 0, 0.7)';
+        gameOverDiv.style.padding = '20px';
+        gameOverDiv.style.borderRadius = '10px';
+
+        document.body.appendChild(gameOverDiv);
     }
 
 }

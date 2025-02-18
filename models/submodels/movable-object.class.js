@@ -21,6 +21,18 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
+    playAnimationOnce(images) {
+        let i = 0;
+        let animationInterval = setInterval(() => {
+            if (i < images.length) {
+                this.img = this.imageCache[images[i]];
+                i++;
+            } else {
+                clearInterval(animationInterval); // Stoppt die Animation am letzten Frame
+            }
+        }, 200); // Passe die Geschwindigkeit nach Bedarf an
+    }
+
     moveRight() {
         this.x += this.speed;
     }
