@@ -132,6 +132,7 @@ class World {
 
     showGameOverScreen() {
         let gameOverDiv = document.createElement('div');
+        gameOverDiv.id = 'game-over';
         gameOverDiv.innerHTML = `<h1>Game Over</h1>`;
         gameOverDiv.style.position = 'absolute';
         gameOverDiv.style.top = '50%';
@@ -142,8 +143,24 @@ class World {
         gameOverDiv.style.background = 'rgba(0, 0, 0, 0.7)';
         gameOverDiv.style.padding = '20px';
         gameOverDiv.style.borderRadius = '10px';
+        gameOverDiv.style.display = 'flex';
+        gameOverDiv.style.flexDirection = 'column';
+        gameOverDiv.style.justifyContent = 'center';
+        gameOverDiv.style.alignItems = 'center';
 
+        let tryAgainButton = document.createElement('img');
+        tryAgainButton.src = 'assets/img/6.Botones/Try again/Recurso 18.png';
+        tryAgainButton.style.width = '200px';
+        tryAgainButton.style.cursor = 'pointer';
+        tryAgainButton.addEventListener('click', () => this.restartGame());
+
+        gameOverDiv.appendChild(tryAgainButton);
         document.body.appendChild(gameOverDiv);
+    }
+
+    restartGame() {
+        document.getElementById('game-over')?.remove();
+        location.reload();
     }
 
 }
