@@ -2,7 +2,6 @@ class Endboss extends MovableObject {
     y = 0;
     width = 500;
     height = 500;
-    hadFirstContact = false;
 
     IMAGES_ENDBOSS_INTRODUCE = [
         'assets/img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
@@ -71,14 +70,15 @@ class Endboss extends MovableObject {
 
     animate() {
         let i = 0;
+        let hadFirstContact = false;
         setInterval(() => {
-            if (i < 10) {
+            if (world.character.x >= 2000 && i < 10) {
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
             } else {
                 this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
             }
             i++;
-            if (world.character.x > 2200 && hadFirstContact) {
+            if (world.character.x > 2000 && !hadFirstContact) {
                 i = 0;
                 hadFirstContact = true;
             }
