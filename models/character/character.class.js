@@ -8,6 +8,8 @@ class Character extends MovableObject {
         x: 80, 
         y: 50 
     };
+    isSleeping = false;
+    lastKeyPress;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -155,66 +157,107 @@ class Character extends MovableObject {
 
         this.animate();
         this.moving();
-        // this.sleep();
-        // this.applyGravity();
     }
 
 
     animate() {
+        setTimeout(() => this.checkInitialSleep(), 5000);
         setInterval(() => {
+            if (this.isSleeping) return;
             this.playAnimation(this.IMAGES_IDLE);
         }, 250);
+        document.addEventListener("keydown", () => this.wakeUp());
+        setInterval(() => this.checkSleep(), 500);
+    }
+
+    checkInitialSleep() {
+        if (!this.isSleeping && !this.lastKeyPress) {
+            this.isSleeping = true;
+            this.sleep();
+        }
+    }
+
+    wakeUp() {
+        this.isSleeping = false;
+        this.lastKeyPress = Date.now(); // Reset der Zeitmessung
+        if (this.sleepInterval) {
+            clearInterval(this.sleepInterval); // Sleep-Animation beenden
+            this.sleepInterval = null;
+        }
+        this.playAnimation(this.IMAGES_IDLE); // Normale Animation starten
+    }
+
+    checkSleep() {
+        if (!this.isSleeping && Date.now() - this.lastKeyPress > 3000) {
+            this.isSleeping = true;
+            this.sleep();
+        }
+    }
+
+    sleep() {
+        this.playAnimation(this.IMAGES_SLEEP);
+        let sleepFrames = this.IMAGES_SLEEP.slice(12, 15); // Bilder 12-14 extrahieren
+        this.sleepInterval = setInterval(() => {
+            if (!this.isSleeping) {
+                clearInterval(this.sleepInterval);
+                this.sleepInterval = null;
+                return;
+            }
+            this.playAnimation(sleepFrames);
+            this.sinkToGround();
+        }, 1500);
+    }
+
+    sinkToGround() {
+        let sinkInterval = setInterval(() => {
+            if (!this.isSleeping || !this.isAboveGround()) {
+                clearInterval(sinkInterval);
+                return;
+            }
+            this.y += 1;
+        }, 1000 / 25);
     }
 
     moving() {
         setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false;
             }
             if (this.world.keyboard.LEFT && this.x > -600) {
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
             }
             if (this.world.keyboard.UP && this.y > -100) {
-                this.y -= this.speed;
+                this.moveUp();
             }
-            if (this.world.keyboard.DOWN && this.y < 230) {
-                this.y += this.speed;
+            if (this.world.keyboard.DOWN && this.y < 270) {
+                this.moveDown();
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                this.playAnimation(this.IMAGES_SWIM);
+                this.swim();
             }
         }, 50);
 
         setInterval(() => {
             if (this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                this.playAnimation(this.IMAGES_IDLE);
+                this.swim();
+            }
+            if (this.world.keyboard.SPACE) {
+                this.attackFinSlap();
             }
         }, 250);
     }
 
-    attack() {
-        console.log('attacking');
-        
+    swim() {
+        this.playAnimation(this.IMAGES_SWIM);
     }
 
-    jump() {
-        console.log('jumping');
-
-    }   
-
-    sleep() {
-        console.log('sleeping');
-        if (this.isAboveGround()) {
-            this.applyGravity();
-            this.playAnimation(this.IMAGES_SLEEP);
-        }
+    attackFinSlap() {
+        this.playAnimation(this.IMAGES_ATTACK_FIN_SLAP);
     }
-    
-
 }

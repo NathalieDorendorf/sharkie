@@ -35,11 +35,11 @@ class MovableObject extends DrawableObject {
     }
 
     moveUp() {
-        this.y += this.speed;
+        this.y -= this.speed;
     }
 
     moveDown() {
-        this.y -= this.speed;
+        this.y += this.speed;
     }
 
     applyGravity() {
@@ -55,12 +55,8 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) { // ThrowableObject should always fall
             return true;
         } else {
-            return this.y < 180;
+            return this.y < 270;
         }
-    }
-
-    jump() {
-        this.speedY = 20;
     }
 
     isColliding(object) {
