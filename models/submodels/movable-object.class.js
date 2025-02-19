@@ -6,13 +6,6 @@ class MovableObject extends DrawableObject {
     acceleration = 1;
     energy = 100;
     lastHit = 0;
-    // offsetY;
-    offset = {
-        top: 0, // 120
-        bottom: 0, // 30
-        left: 0, // 40
-        right: 0 // 30
-    }
 
     playAnimation(images) {
         let index = this.currentImage % images.length;
@@ -71,10 +64,23 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(object) {
-        return (this.x + this.width) >= object.x && // from right to enemy
-            this.x <= (object.x + object.width) && // from left to enemy
-            (this.y + this.height) >= object.y &&  // from top to enemy
-            this.y <= (object.y + object.height); // from bottom to enemy
+        // Charakter-Hitbox mit Offset
+        let selfLeft = this.x + this.frameOffset.x;
+        let selfRight = selfLeft + (this.width - this.frameOffset.width);
+        let selfTop = this.y + this.frameOffset.y;
+        let selfBottom = selfTop + (this.height - this.frameOffset.height);
+
+        // Gegner-/Objekt-Hitbox mit Offset
+        let objLeft = object.x + object.frameOffset.x;
+        let objRight = objLeft + (object.width - object.frameOffset.width);
+        let objTop = object.y + object.frameOffset.y;
+        let objBottom = objTop + (object.height - object.frameOffset.height);
+
+        // Kollisionslogik mit den neuen kleineren Hitboxen
+        return selfRight >= objLeft &&  // Von rechts gegen Objekt
+            selfLeft <= objRight &&  // Von links gegen Objekt
+            selfBottom >= objTop &&  // Von oben gegen Objekt
+            selfTop <= objBottom;    // Von unten gegen Objekt
     }
 
     hit() {
@@ -97,9 +103,3 @@ class MovableObject extends DrawableObject {
     }
 
 }
-
-
-// return (this.x + this.width) >= object.x && this.x <= (object.x + object.width) &&
-//     (this.y + this.offsetY + this.height) >= object.y &&
-//     (this.y + this.offsetY) <= (object.y + object.height);      
-//     }

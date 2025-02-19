@@ -1,5 +1,5 @@
 class StatusBarEndboss extends StatusBar {
-    x = 580;
+    x = 570;
     
     IMAGES_STATUSBAR = [
         'assets/img/4. Marcadores/green/Life/0_green.png',

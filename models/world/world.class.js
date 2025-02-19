@@ -36,12 +36,10 @@ class World {
     }
 
     drawStaticElements() {
-        this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBarCharacter);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarPoison);
         this.addToMap(this.statusBarEndboss);
-        this.ctx.translate(this.camera_x, 0);
     }
 
     drawDynamicElements() {
@@ -67,6 +65,7 @@ class World {
         }
         movableObject.draw(this.ctx);
         movableObject.drawFrame(this.ctx);
+        movableObject.drawSmallFrame(this.ctx);
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
         }
@@ -92,7 +91,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-            this.checkGameOver();
+            // this.checkGameOver();
         }, 200);
     }
 

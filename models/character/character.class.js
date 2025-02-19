@@ -142,6 +142,13 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD_POISENED);
         this.loadImages(this.IMAGES_DEAD_ELECTRIC_SHOCK);
 
+        this.frameOffset = {
+            x: 45,
+            y: 110,
+            width: 90,
+            height: 165
+        };
+
         this.animate();
         this.moving();
         // this.sleep();

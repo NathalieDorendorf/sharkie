@@ -1,4 +1,5 @@
 class Endboss extends MovableObject {
+    x = 2300;
     y = 0;
     width = 500;
     height = 500;
@@ -64,7 +65,14 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ENDBOSS_ATTACK);
         this.loadImages(this.IMAGES_ENDBOSS_HURT);
         this.loadImages(this.IMAGES_ENDBOSS_DEAD);
-        this.x = 2300;
+
+        this.frameOffset = {
+            x: 40,
+            y: 230,
+            width: 100,
+            height: 340
+        };
+
         this.animate();
     }
 
