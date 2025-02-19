@@ -134,7 +134,6 @@ class Character extends MovableObject {
         'assets/img/1.Sharkie/6.dead/2.Electro_shock/10.png'
     ];
 
-
     constructor() {
         super().loadImage(this.IMAGES_IDLE[0]);
         this.loadImages(this.IMAGES_IDLE);
@@ -158,7 +157,6 @@ class Character extends MovableObject {
         this.animate();
         this.moving();
     }
-
 
     animate() {
         setTimeout(() => this.checkInitialSleep(), 5000);

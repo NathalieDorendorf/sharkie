@@ -65,14 +65,12 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ENDBOSS_ATTACK);
         this.loadImages(this.IMAGES_ENDBOSS_HURT);
         this.loadImages(this.IMAGES_ENDBOSS_DEAD);
-
         this.frameOffset = {
             x: 40,
             y: 230,
             width: 100,
             height: 340
         };
-
         this.animate();
     }
 

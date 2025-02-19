@@ -9,11 +9,9 @@ class JellyFish extends MovableObject {
     constructor() {
         super().loadImage(this.IMAGES_JELLY_FISH_PURPLE[0]);
         this.loadImages(this.IMAGES_JELLY_FISH_PURPLE);
-
         this.x = 400 + Math.random() * 700;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
-
         this.animate();
         this.animateMoving();
     }

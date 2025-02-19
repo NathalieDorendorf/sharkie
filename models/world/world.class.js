@@ -25,7 +25,6 @@ class World {
         this.clearCanvas();
         this.drawDynamicElements();
         this.drawStaticElements();
-
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
@@ -112,20 +111,6 @@ class World {
         }
     }
 
-    // checkThrowObjects() {
-    //     if (this.keyboard.THROW && !this.throwKeyPressed) {
-    //         this.character.isThrowing = true;
-    //         this.character.playAnimation(this.character.IMAGES_ATTACK_BUBBLES);
-    //         let bubble = new ThrowableObject(
-    //             this.character.x + this.character.mouthOffset.x,
-    //             this.character.y + this.character.mouthOffset.y
-    //         );
-    //         this.throwableObjects.push(bubble);
-    //         this.character.isThrowing = false;  // Cooldown für die Animation
-    //     }
-
-    // }
-
     checkGameOver() {
         if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
             this.character.isDead = true;
@@ -205,5 +190,4 @@ class World {
             element.webkitRequestFullscreen();
         }
     }
-
 }

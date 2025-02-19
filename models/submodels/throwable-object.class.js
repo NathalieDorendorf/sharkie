@@ -21,17 +21,4 @@ class ThrowableObject extends MovableObject {
             this.x += 10;
         }, 25);
     }
-
-    // throw() {
-    //     this.speedY = 10; // Langsamere Steigung
-    //     this.speedX = 8;  // Langsamere Geschwindigkeit nach rechts
-    //     this.applyGravity();
-
-    //     setInterval(() => {
-    //         this.x += this.speedX;
-    //         this.y -= this.speedY; // Simuliert eine Wurfkurve
-    //         this.speedY *= 0.95; // Langsame Abnahme des Y-Schubs für realistischeren Wurf
-    //     }, 25);
-    // }
-
 }

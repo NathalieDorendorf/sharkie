@@ -89,24 +89,20 @@ class PufferFish extends MovableObject {
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/3.3.png'
     ];
 
-
     constructor() {
         super().loadImage(this.IMAGES_PUFFER_FISH_GREEN[0]);
         this.loadImages(this.IMAGES_PUFFER_FISH_GREEN);
         this.loadImages(this.IMAGES_PUFFER_FISH_YELLOW);
         this.loadImages(this.IMAGES_PUFFER_FISH_RED);
-
         this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
-
         this.frameOffset = {
             x: 10,
             y: 10,
             width: 25,
             height: 40
         };
-
         this.animate();
         // this.animateMoving();
     }
