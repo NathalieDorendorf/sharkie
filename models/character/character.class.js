@@ -4,6 +4,10 @@ class Character extends MovableObject {
     world;
     speed = 10;
     isDead = false;
+    mouthOffset = {
+        x: 80, 
+        y: 50 
+    };
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -175,7 +179,7 @@ class Character extends MovableObject {
             if (this.world.keyboard.UP && this.y > -100) {
                 this.y -= this.speed;
             }
-            if (this.world.keyboard.DOWN && this.y < 220) {
+            if (this.world.keyboard.DOWN && this.y < 230) {
                 this.y += this.speed;
             }
             this.world.camera_x = -this.x + 100;

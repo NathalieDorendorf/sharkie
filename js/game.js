@@ -11,7 +11,7 @@ function init() {
 }
 
 window.addEventListener("keydown", (event) => {
-    // console.log(event);
+    console.log(event);
     if (event.key == 39 || event.key === 'ArrowRight' || event.key === 'd') {
         keyboard.RIGHT = true;
     }
@@ -27,11 +27,9 @@ window.addEventListener("keydown", (event) => {
     if (event.keyCode == 32 || event.key === 'Shift' || event.key === 'Space' || event.key === ' ') {
         keyboard.SPACE = true;
     }
-    // if (event.key === 'Control') {
-    //     keyboard.CONTROL = true;
-    //     world.character.sleep();
-    //     console.log(event.key);
-    // }
+    if (event.keyCode == 70 || event.key === 'f' || event.keyCode == 67 || event.key === 'c') {
+        keyboard.THROW = true;
+    }
 });
 
 window.addEventListener("keyup", (event) => {
@@ -50,11 +48,9 @@ window.addEventListener("keyup", (event) => {
     if (event.keyCode == 32 || event.key === 'Shift' || event.key === 'Space' || event.key === ' ') {
         keyboard.SPACE = false;
     }
-    // if (event.key === 'Control') {
-    //     keyboard.CONTROL = false;
-    //     world.character.sleep();
-    //     console.log(event.key);
-    // }
+    if (event.keyCode == 70 || event.key === 'f' || event.keyCode == 67 || event.key === 'c') {
+        keyboard.THROW = false;
+    }
 });
 
 function checkOrientation() {

@@ -10,6 +10,7 @@ class World {
     statusBarPoison = new StatusBarPoison();
     statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
+    isThrowing = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -105,11 +106,25 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.SPACE) {
-            let bubble = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
+        if (this.keyboard.THROW) {
+            let bubble = new ThrowableObject(this.character.x + 160, this.character.y + 100);
             this.throwableObjects.push(bubble);
         }
     }
+
+    // checkThrowObjects() {
+    //     if (this.keyboard.THROW && !this.throwKeyPressed) {
+    //         this.character.isThrowing = true;
+    //         this.character.playAnimation(this.character.IMAGES_ATTACK_BUBBLES);
+    //         let bubble = new ThrowableObject(
+    //             this.character.x + this.character.mouthOffset.x,
+    //             this.character.y + this.character.mouthOffset.y
+    //         );
+    //         this.throwableObjects.push(bubble);
+    //         this.character.isThrowing = false;  // Cooldown für die Animation
+    //     }
+
+    // }
 
     checkGameOver() {
         if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
