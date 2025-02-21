@@ -1,4 +1,4 @@
-class Coin extends MovableObjects {
+class Coin extends MovableObject {
     IMAGES_COIN = [
         'assets/img/4. Marcadores/1. Coins/1.png',
         'assets/img/4. Marcadores/1. Coins/2.png',

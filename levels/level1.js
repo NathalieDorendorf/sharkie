@@ -36,7 +36,18 @@ let level1;
             new BackgroundObject('./assets/img/3. Background/Layers/3.Fondo 1/L2.png', 719 * 3),
             new BackgroundObject('./assets/img/3. Background/Layers/2. Floor/L2.png', 719 * 3)
         ],
-        []
+        [
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin()
+        ]
     );
 // }
 
