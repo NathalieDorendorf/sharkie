@@ -257,5 +257,12 @@ class Character extends MovableObject {
 
     attackFinSlap() {
         this.playAnimation(this.IMAGES_ATTACK_FIN_SLAP);
+
+        // Prüfe, ob ein Gegner getroffen wurde
+        this.world.level.enemies.forEach(enemy => {
+            if (this.isColliding(enemy)) {
+                enemy.die(); // Gegner stirbt
+            }
+        });
     }
 }

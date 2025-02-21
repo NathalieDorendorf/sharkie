@@ -3,9 +3,9 @@ let level1;
 // function initLevel() {
     level1 = new Level(
         [
-            new PufferFish(),
-            new PufferFish(),
-            new PufferFish(),
+            new PufferFishGreen(),
+            new PufferFishGreen(),
+            new PufferFishGreen(),
             new Endboss()
         ],
         [

@@ -94,6 +94,47 @@ class MovableObject extends DrawableObject {
         return timePassed < 1;
     }
 
+    // die() {
+    //     this.isDead = true;
+    //     this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD); // Dead-Animation starten
+
+    //     // Gegner nach der Animation entfernen
+    //     setTimeout(() => {
+    //         let index = this.world.level.enemies.indexOf(this);
+    //         if (index > -1) {
+    //             this.world.level.enemies.splice(index, 1);
+    //         }
+    //     }, 1000); // Zeit anpassen je nach Länge der Dead-Animation
+    // }
+
+    die() {
+        this.isDead = true;
+        this.playAnimation(this.IMAGES_DEAD); // Dead-Animation starten
+
+        // Richtung bestimmen (entgegen der Bewegungsrichtung des Charakters)
+        let direction = this.world.character.otherDirection ? 1 : -1; // Falls Charakter nach links schaut -> Gegner fliegt nach rechts
+
+        setTimeout(() => {
+            this.flyOutOfCanvas(direction);
+        }, 500); // 500ms warten, bevor der Gegner wegfliegt
+    }
+
+    flyOutOfCanvas(direction) {
+        let flyInterval = setInterval(() => {
+            this.x += 10 * direction; // Gegner fliegt in die bestimmte Richtung
+            this.y -= 5; // Gegner steigt nach oben
+
+            // Wenn Gegner aus dem Canvas ist, entfernen
+            if (this.x < -200 || this.x > this.world.level.level_end_x + 200 || this.y < -200) {
+                clearInterval(flyInterval);
+                let index = this.world.level.enemies.indexOf(this);
+                if (index > -1) {
+                    this.world.level.enemies.splice(index, 1);
+                }
+            }
+        }, 50); // Bewegung alle 50ms updaten
+    }
+
     isDead() {
         return this.energy == 0;
     }
