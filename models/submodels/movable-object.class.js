@@ -109,7 +109,7 @@ class MovableObject extends DrawableObject {
 
     die() {
         this.isDead = true;
-        this.playAnimation(this.IMAGES_DEAD); // Dead-Animation starten
+        this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD); // Dead-Animation starten
 
         // Richtung bestimmen (entgegen der Bewegungsrichtung des Charakters)
         let direction = this.world.character.otherDirection ? 1 : -1; // Falls Charakter nach links schaut -> Gegner fliegt nach rechts

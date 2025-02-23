@@ -1,4 +1,7 @@
 class PufferFishGreen extends MovableObject {
+    height = 70;
+    width = 90;
+
     IMAGES_PUFFER_FISH = [
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png',
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png',
@@ -43,7 +46,7 @@ class PufferFishGreen extends MovableObject {
             x: 10,
             y: 10,
             width: 25,
-            height: 40
+            height: 35
         };
         this.animate();
         // this.animateMoving();

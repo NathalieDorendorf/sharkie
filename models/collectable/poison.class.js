@@ -21,7 +21,7 @@ class Poison extends MovableObject {
     ];
 
     constructor() {
-        super();
+        super().loadImage(this.IMAGES_POISON);
         this.loadImages(this.IMAGES_POISON);
 
         this.x = 200 + Math.random() * 1000;
