@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     acceleration = 1;
     energy = 100;
     lastHit = 0;
+    collectable = 0;
 
     playAnimation(images) {
         let index = this.currentImage % images.length;
@@ -77,6 +78,15 @@ class MovableObject extends DrawableObject {
             selfLeft <= objRight &&  // Von links gegen Objekt
             selfBottom >= objTop &&  // Von oben gegen Objekt
             selfTop <= objBottom;    // Von unten gegen Objekt
+    }
+
+    collect() {
+        this.collectable += 5;
+        if (this.collectable > 100) {
+            this.collectable = 100;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
     }
 
     hit() {

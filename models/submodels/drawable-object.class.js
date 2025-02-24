@@ -31,7 +31,7 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof PufferFishGreen || this instanceof Endboss || this instanceof Coin) {
+        if (this instanceof Character || this instanceof PufferFishGreen || this instanceof Endboss || this instanceof Coin || this instanceof Poison) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'blue';
@@ -41,7 +41,7 @@ class DrawableObject {
     }
 
     drawSmallFrame(ctx) {
-        if (this instanceof Character || this instanceof PufferFishGreen || this instanceof Endboss || this instanceof Coin) {
+        if (this instanceof Character || this instanceof PufferFishGreen || this instanceof Endboss || this instanceof Coin || this instanceof Poison) {
             ctx.beginPath();
             ctx.lineWidth = '2';
             ctx.strokeStyle = 'red';

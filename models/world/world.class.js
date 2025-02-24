@@ -49,6 +49,7 @@ class World {
         this.addObjectsToMap(this.level.barriers);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.poison);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
@@ -91,6 +92,7 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
+            this.checkCollisionsCollectable();
             this.checkThrowObjects();
             // this.checkGameOver();
         }, 200);
@@ -102,6 +104,13 @@ class World {
                 this.character.hit();
                 this.statusBarCharacter.setPercentage(this.character.energy);
             }
+        });
+    }
+
+    checkCollisionsCollectable() {
+        this.level.coins.forEach(coin => {
+            this.character.collect(coin);
+            this.statusBarCoin.setPercentage(this.character.collectable);
         });
     }
 
