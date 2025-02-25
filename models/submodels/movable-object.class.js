@@ -6,7 +6,8 @@ class MovableObject extends DrawableObject {
     acceleration = 1;
     energy = 100;
     lastHit = 0;
-    collectable = 0;
+    collectedCoins = 0;
+    collectedPoison = 0;
 
     playAnimation(images) {
         let index = this.currentImage % images.length;
@@ -80,13 +81,16 @@ class MovableObject extends DrawableObject {
             selfTop <= objBottom;    // Von unten gegen Objekt
     }
 
-    collect() {
-        this.collectable += 5;
-        if (this.collectable > 100) {
-            this.collectable = 100;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
+    collectCoin(index) {
+        this.level.coins.splice(index, 1); // Münze aus dem Array entfernen
+        this.character.collectedCoins++; // Anzahl der gesammelten Münzen erhöhen
+        this.statusBarCoins.setPercentage(this.character.collectedCoins * 10); // Status-Bar updaten
+    }
+
+    collectPoison(index) {
+        this.level.poison.splice(index, 1); // Gift aus dem Array entfernen
+        this.character.collectedPoison++; // Anzahl der gesammelten Giftflaschen erhöhen
+        this.statusBarPoison.setPercentage(this.character.collectedPoison * 10); // Status-Bar updaten
     }
 
     hit() {

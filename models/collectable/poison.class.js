@@ -1,5 +1,5 @@
 class Poison extends MovableObject {
-height = 55;
+height = 65;
 width = 55;
 
     IMAGES_POISON = [

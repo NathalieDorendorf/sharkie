@@ -1,6 +1,5 @@
 class StatusBarCoin extends StatusBar {
     y = 70;
-    percentage = 0;
     
     IMAGES_STATUSBAR = [
         'assets/img/4. Marcadores/Purple/coin_0.png',
@@ -14,6 +13,7 @@ class StatusBarCoin extends StatusBar {
     constructor() {
         super();
         this.loadImages(this.IMAGES_STATUSBAR);
+        this.percentage = 0;
         this.setPercentage(this.percentage);
     }
 }

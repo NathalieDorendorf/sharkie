@@ -11,7 +11,7 @@ function init() {
 }
 
 window.addEventListener("keydown", (event) => {
-    console.log(event);
+    // console.log(event);
     if (event.key == 39 || event.key === 'ArrowRight' || event.key === 'd') {
         keyboard.RIGHT = true;
     }

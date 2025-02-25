@@ -92,7 +92,7 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
-            this.checkCollisionsCollectable();
+            this.checkCollisionsCollectables();
             this.checkThrowObjects();
             // this.checkGameOver();
         }, 200);
@@ -107,10 +107,26 @@ class World {
         });
     }
 
-    checkCollisionsCollectable() {
-        this.level.coins.forEach(coin => {
-            this.character.collect(coin);
-            this.statusBarCoin.setPercentage(this.character.collectable);
+    checkCollisionsCollectables() {
+        this.checkCollisionsCoins();
+        this.checkCollisionsPoison();
+    }
+
+    checkCollisionsCoins() {
+        this.level.coins.forEach(coin, index => {
+            if (this.character.isColliding(coin)) {
+                this.character.collectCoin(index);
+                this.statusBarCoin.setPercentage(this.character.collectedCoins);
+            }
+        });
+    }
+
+    checkCollisionsPoison() {
+        this.level.poison.forEach(poison, index => {
+            if (this.character.isColliding(poison)) {
+                this.character.collectPoison(index);
+                this.statusBarPoison.setPercentage(this.character.collectedPoison);
+            }
         });
     }
 
