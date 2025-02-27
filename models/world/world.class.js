@@ -185,33 +185,4 @@ class World {
         document.getElementById('game-over')?.remove();
         location.reload();
     }
-
-    fullscreen() {
-        let fullscreen = document.getElementById('fullscreen');
-        enterFullscreen(fullscreen);
-    }
-
-    enterFullscreen(element) {
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.meRequestFullscreen();
-        } else if (element.mozRequestFullscreen) {
-            element.mozRequestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        }
-    }
-
-    exitFullscreen(element) {
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.meRequestFullscreen();
-        } else if (element.mozRequestFullscreen) {
-            element.mozRequestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        }
-    }
 }

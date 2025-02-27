@@ -64,3 +64,32 @@ function checkOrientation() {
         document.getElementById('canvas').style.height = `100%`;
     }
 }
+
+function fullscreen() {
+    let fullscreen = document.getElementById('fullscreen');
+    enterFullscreen(fullscreen);
+}
+
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.meRequestFullscreen();
+    } else if (element.mozRequestFullscreen) {
+        element.mozRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    }
+}
+
+function exitFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.meRequestFullscreen();
+    } else if (element.mozRequestFullscreen) {
+        element.mozRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    }
+}
