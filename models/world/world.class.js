@@ -95,7 +95,7 @@ class World {
             this.checkCollisionsCollectables();
             this.checkThrowObjects();
             // this.checkGameOver();
-        }, 200);
+        }, 100);
     }
 
     checkCollisions() {
@@ -113,19 +113,17 @@ class World {
     }
 
     checkCollisionsCoins() {
-        this.level.coins.forEach(coin, index => {
+        this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
                 this.character.collectCoin(index);
-                this.statusBarCoin.setPercentage(this.character.collectedCoins);
             }
         });
     }
 
     checkCollisionsPoison() {
-        this.level.poison.forEach(poison, index => {
+        this.level.poison.forEach((poison, index) => {
             if (this.character.isColliding(poison)) {
                 this.character.collectPoison(index);
-                this.statusBarPoison.setPercentage(this.character.collectedPoison);
             }
         });
     }
