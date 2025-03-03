@@ -11,7 +11,7 @@ function init() {
 }
 
 window.addEventListener("keydown", (event) => {
-    // console.log(event);
+    console.log(event);
     if (event.key == 39 || event.key === 'ArrowRight' || event.key === 'd') {
         keyboard.RIGHT = true;
     }
@@ -66,20 +66,39 @@ function checkOrientation() {
 }
 
 function fullscreen() {
-    let fullscreen = document.getElementById('fullscreen');
-    enterFullscreen(fullscreen);
+    let fullscreenElement = document.getElementById('fullscreen');
+    let canvas = document.getElementById('canvas');
+    enterFullscreen(fullscreenElement);
+    setTimeout(() => {
+        canvas.style.width = "100vw";
+        canvas.style.height = "100vh";
+    }, 300);
 }
 
 function enterFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if (element.msRequestFullscreen) {
-        element.meRequestFullscreen();
-    } else if (element.mozRequestFullscreen) {
-        element.mozRequestFullscreen();
+        element.msRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
     } else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
     }
+}
+
+window.addEventListener("keydown", (event) => {
+    if (event.keyCode == 27 || event.key === "Escape" || document.fullscreenElement) {
+        exitFullscreenAndResize();
+    }
+});
+
+function exitFullscreenAndResize() {
+    exitFullscreen();
+    let canvas = document.getElementById('canvas');
+    setTimeout(() => {
+        canvas.removeAttribute('style');
+    }, 300);
 }
 
 function exitFullscreen(element) {
