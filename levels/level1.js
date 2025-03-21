@@ -1,6 +1,6 @@
 let level1;
 
-// function initLevel() {
+function initLevel() {
     level1 = new Level(
         [
             new PufferFishGreen(),
@@ -61,5 +61,5 @@ let level1;
             new Poison()
         ]
     );
-// }
+}
 

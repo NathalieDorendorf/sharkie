@@ -34,7 +34,7 @@
     <script src="./levels/level2.js"></script>
     <script src="./js/game.js"></script>
 </head>
-<body onload="init()">
+<body>
     <h1>Sharkie</h1>
 
     <div id="fullscreen">
@@ -43,11 +43,12 @@
         </canvas>
     </div>
 
-    <div class="start-container" id="start-container">
+    <div class="start-container" id="startContainer">
         <h1>Sharkie</h1>
         <div class="startscreen" id="startscreen">
             <h2>Sharkie</h2>
             <button onclick="startGame()">Start Game</button>
+            <button onclick="openOverlay()">Options</button>
         </div>
     </div>
 

@@ -2,16 +2,19 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-function init() {
+function startGame() {
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    document.getElementById('startContainer').remove();
+    initLevel();
+    world = new World(canvas, keyboard, level1);
     console.log('my Character: ', world.character);
-    
+
     checkOrientation();
+    window.addEventListener("resize", checkOrientation);
 }
 
 window.addEventListener("keydown", (event) => {
-    console.log(event);
+    // console.log(event);
     if (event.key == 39 || event.key === 'ArrowRight' || event.key === 'd') {
         keyboard.RIGHT = true;
     }

@@ -78,7 +78,7 @@ class Endboss extends MovableObject {
         let i = 0;
         let hadFirstContact = false;
         setInterval(() => {
-            if (world.character.x >= 2000 && i < 10) {
+            if (i < 10) {
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
             } else {
                 this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
