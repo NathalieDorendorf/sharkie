@@ -39,7 +39,9 @@ class World {
         this.addToMap(this.statusBarCharacter);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarPoison);
-        this.addToMap(this.statusBarEndboss);
+        if (this.level.enemies.some(enemy => enemy instanceof Endboss && enemy.isActive)) {
+            this.addToMap(this.statusBarEndboss);
+        }
     }
 
     drawDynamicElements() {
