@@ -16,7 +16,4 @@ class Barrier extends MovableObject {
         this.y = 100 + Math.random() * 200;
     }
 
-    draw() {
-        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-    }
 }

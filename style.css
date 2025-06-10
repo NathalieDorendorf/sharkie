@@ -1,9 +1,110 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: 'LuckiestGuy-Regular';
+    src: url('./assets/font/Luckiest_Guy/LuckiestGuy-Regular.ttf') format('truetype');
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    font-family: 'LuckiestGuy-Regular', Arial, Helvetica, sans-serif;
+    letter-spacing: 0.35rem;
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 6px 4px 2px rgba(0, 0, 0, 0.5);
+    background-image: url('./assets/img/underwater.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 4rem;
+    padding: 2rem;
 }
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+.start-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    top: -1.2em;
+}
+
+.startscreen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('./assets/img/3. Background/Mesa de trabajo 1.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 480px;
+    width: 720px;
+    z-index: 1;
+}
+
+button {
+    background-color: #C30079; /* Magenta Hintergrund */
+    color: white; /* Weiße Schrift */
+    font-size: 24px; /* Schriftgröße */
+    font-weight: bold; /* Fette Schrift */
+    text-transform: uppercase; /* Großbuchstaben */
+    border: 4px solid white; /* Weißer Rand */
+    border-radius: 20px; /* Abgerundete Ecken */
+    padding: 10px 30px; /* Innenabstand */
+    cursor: pointer; /* Hand-Cursor */
+    font-family: 'LuckiestGuy-Regular', Arial, sans-serif; /* Deine Schriftart */
+    letter-spacing: 2px; /* Abstand zwischen Buchstaben */
+    
+    /* Text richtig zentrieren */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    /* 3D-Effekt mit grauem Schatten */
+    box-shadow: 0px 4px 0px #666; 
+    transition: all 0.2s ease-in-out;
+}
+
+button:active {
+    box-shadow: 0px 2px 0px #666; /* Schatten verkleinern beim Klicken */
+    transform: translateY(2px); /* Button leicht nach unten drücken */
+}
+
+d-none {
+    display: none;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
 }

@@ -1,7 +1,9 @@
 class Endboss extends MovableObject {
+    x = 2300;
     y = 0;
     width = 500;
     height = 500;
+    isActivated = false;
 
     IMAGES_ENDBOSS_INTRODUCE = [
         'assets/img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
@@ -64,13 +66,30 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ENDBOSS_ATTACK);
         this.loadImages(this.IMAGES_ENDBOSS_HURT);
         this.loadImages(this.IMAGES_ENDBOSS_DEAD);
-        this.x = 2300;
+        this.frameOffset = {
+            x: 40,
+            y: 230,
+            width: 100,
+            height: 340
+        };
         this.animate();
     }
 
     animate() {
+        let i = 0;
+        let hadFirstContact = false;
         setInterval(() => {
-            this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
+            if (world.character.x >= 2000 && i < 10) {
+                this.isActive = true;
+                this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
+                i++;
+            } else if (this.isActive) {
+                this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
+            }
+            if (world.character.x > 2000 && !hadFirstContact) {
+                i = 10;
+                hadFirstContact = true;
+            }
         }, 250);
     }
 

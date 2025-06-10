@@ -5,6 +5,12 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    statusBarCharacter = new StatusBarCharacter();
+    statusBarCoin = new StatusBarCoin();
+    statusBarPoison = new StatusBarPoison();
+    statusBarEndboss = new StatusBarEndboss();
+    throwableObjects = [];
+    isThrowing = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -12,31 +18,43 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-    }
-
-    setWorld() {
-        this.character.world = this;
+        this.run();
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.translate(this.camera_x, 0);
-        
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.lights);
-        this.addObjectsToMap(this.level.barriers);
-
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
-
-        this.ctx.translate(-this.camera_x, 0);
-
-        // draw() wird immer wieder aufgerufen
+        this.clearCanvas();
+        this.drawDynamicElements();
+        this.drawStaticElements();
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
         });
+    }
+
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawStaticElements() {
+        this.addToMap(this.statusBarCharacter);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarPoison);
+        if (this.level.enemies.some(enemy => enemy instanceof Endboss && enemy.isActive)) {
+            this.addToMap(this.statusBarEndboss);
+        }
+    }
+
+    drawDynamicElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.lights);
+        this.addObjectsToMap(this.level.barriers);
+        this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.poison);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+        this.ctx.translate(-this.camera_x, 0);
     }
 
     addObjectsToMap(objects) {
@@ -49,7 +67,9 @@ class World {
         if (movableObject.otherDirection) {
             this.flipImage(movableObject);
         }
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+        movableObject.draw(this.ctx);
+        movableObject.drawFrame(this.ctx);
+        movableObject.drawSmallFrame(this.ctx);
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
         }
@@ -65,5 +85,106 @@ class World {
     flipImageBack(movableObject) {
         movableObject.x = movableObject.x * -1;
         this.ctx.restore();
+    }
+
+    setWorld() {
+        this.character.world = this;
+    }
+
+    run() {
+        setInterval(() => {
+            this.checkCollisions();
+            this.checkCollisionsCollectables();
+            this.checkThrowObjects();
+            // this.checkGameOver();
+        }, 100);
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBarCharacter.setPercentage(this.character.energy);
+            }
+        });
+    }
+
+    checkCollisionsCollectables() {
+        this.checkCollisionsCoins();
+        this.checkCollisionsPoison();
+    }
+
+    checkCollisionsCoins() {
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.character.collectCoin(index);
+            }
+        });
+    }
+
+    checkCollisionsPoison() {
+        this.level.poison.forEach((poison, index) => {
+            if (this.character.isColliding(poison)) {
+                this.character.collectPoison(index);
+            }
+        });
+    }
+
+    checkThrowObjects() {
+        if (this.keyboard.THROW) {
+            let bubble = new ThrowableObject(this.character.x + 160, this.character.y + 100);
+            this.throwableObjects.push(bubble);
+        }
+    }
+
+    checkGameOver() {
+        if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
+            this.character.isDead = true;
+            this.stopGame();
+            this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
+            setTimeout(() => {
+                this.showGameOverScreen();
+            }, 3000);
+        }
+    }
+
+    stopGame() {
+        let highestId = setInterval(() => { }, 0);
+        for (let i = 1; i <= highestId; i++) {
+            clearInterval(i);
+        }
+    }
+
+    showGameOverScreen() {
+        let gameOverDiv = document.createElement('div');
+        gameOverDiv.id = 'game-over';
+        gameOverDiv.innerHTML = `<h1>Game Over</h1>`;
+        gameOverDiv.style.position = 'absolute';
+        gameOverDiv.style.top = '50%';
+        gameOverDiv.style.left = '50%';
+        gameOverDiv.style.transform = 'translate(-50%, -50%)';
+        gameOverDiv.style.color = 'white';
+        gameOverDiv.style.fontSize = '50px';
+        gameOverDiv.style.background = 'rgba(0, 0, 0, 0.7)';
+        gameOverDiv.style.padding = '20px';
+        gameOverDiv.style.borderRadius = '10px';
+        gameOverDiv.style.display = 'flex';
+        gameOverDiv.style.flexDirection = 'column';
+        gameOverDiv.style.justifyContent = 'center';
+        gameOverDiv.style.alignItems = 'center';
+
+        let tryAgainButton = document.createElement('img');
+        tryAgainButton.src = 'assets/img/6.Botones/Try again/Recurso 18.png';
+        tryAgainButton.style.width = '200px';
+        tryAgainButton.style.cursor = 'pointer';
+        tryAgainButton.addEventListener('click', () => this.restartGame());
+
+        gameOverDiv.appendChild(tryAgainButton);
+        document.body.appendChild(gameOverDiv);
+    }
+
+    restartGame() {
+        document.getElementById('game-over')?.remove();
+        location.reload();
     }
 }
