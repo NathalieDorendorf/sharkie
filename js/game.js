@@ -90,28 +90,37 @@ function enterFullscreen(element) {
     }
 }
 
-window.addEventListener("keydown", (event) => {
-    if (event.keyCode == 27 || event.key === "Escape" || document.fullscreenElement) {
-        exitFullscreenAndResize();
-    }
-});
-
-function exitFullscreenAndResize() {
-    exitFullscreen();
-    let canvas = document.getElementById('canvas');
-    setTimeout(() => {
+document.addEventListener('fullscreenchange', function (event) {
+    const isFullscreen = !(!window.screenTop && !window.screenY);
+    console.log('is Fullscreen?', isFullscreen);
+    if (!isFullscreen) {
+        let canvas = document.getElementById('canvas');
         canvas.removeAttribute('style');
-    }, 300);
-}
-
-function exitFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.meRequestFullscreen();
-    } else if (element.mozRequestFullscreen) {
-        element.mozRequestFullscreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
     }
-}
+}, false);
+
+// window.addEventListener("keydown", (event) => {
+//     if (event.keyCode == 27 || event.key === "Escape" || document.fullscreenElement) {
+//         exitFullscreenAndResize();
+//     }
+// });
+
+// function exitFullscreenAndResize() {
+//     exitFullscreen();
+//     let canvas = document.getElementById('canvas');
+//     setTimeout(() => {
+//         canvas.removeAttribute('style');
+//     }, 300);
+// }
+
+// function exitFullscreen(element) {
+//     if (element.requestFullscreen) {
+//         element.requestFullscreen();
+//     } else if (element.msRequestFullscreen) {
+//         element.meRequestFullscreen();
+//     } else if (element.mozRequestFullscreen) {
+//         element.mozRequestFullscreen();
+//     } else if (element.webkitRequestFullscreen) {
+//         element.webkitRequestFullscreen();
+//     }
+// }
