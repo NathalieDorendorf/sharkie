@@ -77,18 +77,16 @@ class Endboss extends MovableObject {
 
     animate() {
         let i = 0;
-        let hadFirstContact = false;
         setInterval(() => {
             if (world.character.x >= 2000 && i < 10) {
                 this.isActive = true;
+                if (i == 0) {
+                    this.currentImage = 0;
+                }
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
                 i++;
             } else if (this.isActive) {
                 this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
-            }
-            if (world.character.x > 2000 && !hadFirstContact) {
-                i = 10;
-                hadFirstContact = true;
             }
         }, 250);
     }
