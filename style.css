@@ -93,6 +93,27 @@ button:active {
     transform: translateY(2px); /* Button leicht nach unten drücken */
 }
 
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.startscreen button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 260px;
+}
+
 d-none {
     display: none;
 }

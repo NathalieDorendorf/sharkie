@@ -44,11 +44,20 @@
     </div>
 
     <div class="start-container" id="startContainer">
-        <h1>Sharkie</h1>
         <div class="startscreen" id="startscreen">
-            <h2>Sharkie</h2>
-            <button onclick="startGame()">Start Game</button>
-            <button onclick="openOverlay()">Options</button>
+            <div class="button-group">
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="fullscreen()">
+                    <img src="./assets/img/fullscreen.svg" alt="Fullscreen" class="button-icon">
+                    Fullscreen
+                </button>
+                <button onclick="toggleMusic()" id="musicButton">
+                    <img src="./assets/img/sound-on.svg" alt="Music" class="button-icon" id="musicIcon">
+                    Music On
+                </button>
+                <button onclick="openOverlay()">Options</button>
+                <button onclick="showImprint()">Imprint</button>
+            </div>
         </div>
     </div>
 

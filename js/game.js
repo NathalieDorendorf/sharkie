@@ -98,3 +98,23 @@ document.addEventListener('fullscreenchange', function (event) {
     }
 }, false);
 
+let musicOn = true;
+let backgroundMusic = new Audio('./assets/audio/background.mp3');
+backgroundMusic.loop = true;
+
+function toggleMusic() {
+    const icon = document.getElementById('musicIcon');
+    const button = document.getElementById('musicButton');
+
+    musicOn = !musicOn;
+    if (musicOn) {
+        backgroundMusic.play();
+        icon.src = './assets/img/sound-on.svg';
+        button.innerHTML = `<img src="./assets/img/sound-on.svg" class="button-icon" id="musicIcon"> Music On`;
+    } else {
+        backgroundMusic.pause();
+        icon.src = './assets/img/sound-off.svg';
+        button.innerHTML = `<img src="./assets/img/sound-off.svg" class="button-icon" id="musicIcon"> Music Off`;
+    }
+}
+
