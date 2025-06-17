@@ -114,6 +114,28 @@ button:active {
     width: 260px;
 }
 
+.canvas-icons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+
+.canvas-icons img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.canvas-icons img:hover {
+    transform: scale(1.1);
+}
+
 d-none {
     display: none;
 }

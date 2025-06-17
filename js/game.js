@@ -7,6 +7,7 @@ function startGame() {
     document.getElementById('startContainer').remove();
     initLevel();
     world = new World(canvas, keyboard, level1);
+    backgroundMusic.play();
     console.log('my Character: ', world.character);
 
     checkOrientation();
@@ -68,53 +69,101 @@ function checkOrientation() {
     }
 }
 
-function fullscreen() {
-    let fullscreenElement = document.getElementById('fullscreen');
-    let canvas = document.getElementById('canvas');
-    enterFullscreen(fullscreenElement);
-    setTimeout(() => {
-        canvas.style.width = "100vw";
-        canvas.style.height = "100vh";
-    }, 300);
-}
+function toggleFullscreen() {
+    const icon = document.getElementById('fullscreenIcon');
+    const fullscreenElement = document.fullscreenElement;
 
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
+    if (!fullscreenElement) {
+        enterFullscreen();
+        icon.src = './assets/img/fullscreen-exit.svg';
+        icon.alt = 'Exit Fullscreen';
+    } else {
+        exitFullscreen();
+        icon.src = './assets/img/fullscreen.svg';
+        icon.alt = 'Enter Fullscreen';
     }
 }
 
-document.addEventListener('fullscreenchange', function (event) {
-    const isFullscreen = !!document.fullscreenElement;    console.log('is Fullscreen?', isFullscreen);
-    if (!isFullscreen) {
-        let canvas = document.getElementById('canvas');
-        canvas.removeAttribute('style');
+function enterFullscreen() {
+    const canvasContainer = document.getElementById('fullscreen');
+    if (canvasContainer.requestFullscreen) {
+        canvasContainer.requestFullscreen();
+    } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
+        canvasContainer.webkitRequestFullscreen();
+    } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
+        canvasContainer.msRequestFullscreen();
     }
-}, false);
+}
+
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+    }
+}
+
+document.addEventListener('fullscreenchange', () => {
+    const icon = document.getElementById('fullscreenIcon');
+    if (!document.fullscreenElement) {
+        icon.src = './assets/img/fullscreen.svg';
+        icon.alt = 'Enter Fullscreen';
+    } else {
+        icon.src = './assets/img/fullscreen-exit.svg';
+        icon.alt = 'Exit Fullscreen';
+    }
+});
+
+
+// function fullscreen() {
+//     let fullscreenElement = document.getElementById('fullscreen');
+//     let canvas = document.getElementById('canvas');
+//     enterFullscreen(fullscreenElement);
+//     setTimeout(() => {
+//         canvas.style.width = "100vw";
+//         canvas.style.height = "100vh";
+//     }, 300);
+// }
+
+// function enterFullscreen(element) {
+//     if (element.requestFullscreen) {
+//         element.requestFullscreen();
+//     } else if (element.msRequestFullscreen) {
+//         element.msRequestFullscreen();
+//     } else if (element.mozRequestFullScreen) {
+//         element.mozRequestFullScreen();
+//     } else if (element.webkitRequestFullscreen) {
+//         element.webkitRequestFullscreen();
+//     }
+// }
+
+// document.addEventListener('fullscreenchange', function (event) {
+//     const isFullscreen = !!document.fullscreenElement;    console.log('is Fullscreen?', isFullscreen);
+//     if (!isFullscreen) {
+//         let canvas = document.getElementById('canvas');
+//         canvas.removeAttribute('style');
+//     }
+// }, false);
 
 let musicOn = true;
 let backgroundMusic = new Audio('./assets/audio/background.mp3');
 backgroundMusic.loop = true;
+backgroundMusic.volume = 0.5; // optional: angenehme Lautstärke
 
 function toggleMusic() {
-    const icon = document.getElementById('musicIcon');
-    const button = document.getElementById('musicButton');
-
+    const icon = document.getElementById('soundToggleIcon');
     musicOn = !musicOn;
+
     if (musicOn) {
         backgroundMusic.play();
         icon.src = './assets/img/sound-on.svg';
-        button.innerHTML = `<img src="./assets/img/sound-on.svg" class="button-icon" id="musicIcon"> Music On`;
+        icon.alt = 'Music On';
     } else {
         backgroundMusic.pause();
         icon.src = './assets/img/sound-off.svg';
-        button.innerHTML = `<img src="./assets/img/sound-off.svg" class="button-icon" id="musicIcon"> Music Off`;
+        icon.alt = 'Music Off';
     }
 }
 
