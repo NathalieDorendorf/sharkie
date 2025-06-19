@@ -1,13 +1,17 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let musicOn = false;
+let backgroundMusic = new Audio('./assets/audio/background.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.5;
 
 function startGame() {
     canvas = document.getElementById('canvas');
     document.getElementById('startContainer').remove();
     initLevel();
     world = new World(canvas, keyboard, level1);
-    backgroundMusic.play();
+    playMusic();
     console.log('my Character: ', world.character);
 
     checkOrientation();
@@ -70,11 +74,12 @@ function checkOrientation() {
 }
 
 function toggleFullscreen() {
-    const icon = document.getElementById('fullscreenIcon');
-    const fullscreenElement = document.fullscreenElement;
-
+    let fullscreenElement = document.fullscreenElement;
+    let icon = document.getElementById('fullscreenIcon');
+    let canvasContainer = document.getElementById('fullscreen');
     if (!fullscreenElement) {
-        enterFullscreen();
+        enterFullscreen(canvasContainer);
+        changeCanvasContainerSize();
         icon.src = './assets/img/fullscreen-exit.svg';
         icon.alt = 'Exit Fullscreen';
     } else {
@@ -84,78 +89,63 @@ function toggleFullscreen() {
     }
 }
 
-function enterFullscreen() {
-    const canvasContainer = document.getElementById('fullscreen');
-    if (canvasContainer.requestFullscreen) {
-        canvasContainer.requestFullscreen();
-    } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
-        canvasContainer.webkitRequestFullscreen();
-    } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
-        canvasContainer.msRequestFullscreen();
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
     }
+}
+
+function changeCanvasContainerSize() {
+    setTimeout(() => {
+        canvasContainer.style.width = "100vw";
+        canvasContainer.style.height = "100vh";
+    }, 300);
 }
 
 function exitFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
+    } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
+    } else if (document.mozRequestFullScreen) {
+        document.mozRequestFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
     }
 }
 
 document.addEventListener('fullscreenchange', () => {
+    const isFullscreen = !!document.fullscreenElement;
     const icon = document.getElementById('fullscreenIcon');
-    if (!document.fullscreenElement) {
+    if (!isFullscreen) {
+        let canvasContainer = document.getElementById('fullscreen');
+        canvasContainer.removeAttribute('style');
         icon.src = './assets/img/fullscreen.svg';
         icon.alt = 'Enter Fullscreen';
     } else {
         icon.src = './assets/img/fullscreen-exit.svg';
         icon.alt = 'Exit Fullscreen';
     }
-});
+}, false);
 
-
-// function fullscreen() {
-//     let fullscreenElement = document.getElementById('fullscreen');
-//     let canvas = document.getElementById('canvas');
-//     enterFullscreen(fullscreenElement);
-//     setTimeout(() => {
-//         canvas.style.width = "100vw";
-//         canvas.style.height = "100vh";
-//     }, 300);
-// }
-
-// function enterFullscreen(element) {
-//     if (element.requestFullscreen) {
-//         element.requestFullscreen();
-//     } else if (element.msRequestFullscreen) {
-//         element.msRequestFullscreen();
-//     } else if (element.mozRequestFullScreen) {
-//         element.mozRequestFullScreen();
-//     } else if (element.webkitRequestFullscreen) {
-//         element.webkitRequestFullscreen();
-//     }
-// }
-
-// document.addEventListener('fullscreenchange', function (event) {
-//     const isFullscreen = !!document.fullscreenElement;    console.log('is Fullscreen?', isFullscreen);
-//     if (!isFullscreen) {
-//         let canvas = document.getElementById('canvas');
-//         canvas.removeAttribute('style');
-//     }
-// }, false);
-
-let musicOn = true;
-let backgroundMusic = new Audio('./assets/audio/background.mp3');
-backgroundMusic.loop = true;
-backgroundMusic.volume = 0.5; // optional: angenehme Lautstärke
+function playMusic() {
+    if (!musicOn) {
+        backgroundMusic.play();
+        musicOn = true;
+        document.getElementById('soundToggleIcon').src = './assets/img/sound-on.svg';
+        document.getElementById('soundToggleIcon').alt = 'Music On';
+    }
+}
 
 function toggleMusic() {
     const icon = document.getElementById('soundToggleIcon');
     musicOn = !musicOn;
-
     if (musicOn) {
         backgroundMusic.play();
         icon.src = './assets/img/sound-on.svg';
@@ -166,4 +156,3 @@ function toggleMusic() {
         icon.alt = 'Music Off';
     }
 }
-
