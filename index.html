@@ -36,25 +36,24 @@
 </head>
 <body>
     <h1>Sharkie</h1>
-
-    <div id="fullscreen">
-        <canvas width="720" height="480" id="canvas">
-
-        </canvas>
-        <div class="canvas-icons">
-            <img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()">
-            <img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()">
-        </div>
-    </div>
-
-    <div class="start-container" id="startContainer">
-        <div class="startscreen" id="startscreen">
+    <main>
+        <section id="fullscreen">
+            <canvas width="720" height="480" id="canvas" class="d-none">
+    
+            </canvas>
+            <div class="canvas-icons">
+                <img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()">
+                <img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()">
+            </div>
+        </section>
+    
+        <section class="startscreen" id="startscreen">
             <div class="button-group">
                 <button onclick="startGame()">Start Game</button>
                 <button onclick="openOverlay()">Options</button>
                 <button onclick="showImprint()">Imprint</button>
             </div>
-        </div>
-    </div>
+        </section>    
+    </main>
 </body>
 </html>

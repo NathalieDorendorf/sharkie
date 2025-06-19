@@ -8,12 +8,13 @@ backgroundMusic.volume = 0.5;
 
 function startGame() {
     canvas = document.getElementById('canvas');
-    document.getElementById('startContainer').remove();
+    document.getElementById('startscreen').remove();
     initLevel();
     world = new World(canvas, keyboard, level1);
     playMusic();
     console.log('my Character: ', world.character);
-
+    toggleDisplayNone('canvas');
+    toggleDisplayNone('startscreen');
     checkOrientation();
     window.addEventListener("resize", checkOrientation);
 }
@@ -154,5 +155,12 @@ function toggleMusic() {
         backgroundMusic.pause();
         icon.src = './assets/img/sound-off.svg';
         icon.alt = 'Music Off';
+    }
+}
+
+function toggleDisplayNone(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.classList.toggle('d-none');
     }
 }
