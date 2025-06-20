@@ -148,15 +148,11 @@ class World {
         }
     }
 
-    // stopGame() {
-    //     let highestId = setInterval(() => { }, 0);
-    //     for (let i = 1; i <= highestId; i++) {
-    //         clearInterval(i);
-    //     }
-    // }
-
     stopGame() {
-        clearAllIntervals();
+        let highestId = setInterval(() => { }, 0);
+        for (let i = 1; i <= highestId; i++) {
+            clearInterval(i);
+        }
     }
     
     showGameOverScreen() {

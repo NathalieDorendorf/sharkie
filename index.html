@@ -35,17 +35,19 @@
     <script src="./js/game.js"></script>
 </head>
 <body>
-    <h1>Sharkie</h1>
+    <header>
+        <h1>Sharkie</h1>
+    </header>
     <main>
         <section id="fullscreen">
             <canvas width="720" height="480" id="canvas" class="d-none">
     
             </canvas>
             <div class="canvas-icons">
-                <img src="./assets/img/home.svg" alt="Home" id="homeIcon" onclick="goToHome()">
-                <img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()">
-                <img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()">
-                <img src="./assets/img/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()">
+                <button><img src="./assets/img/home.svg" alt="Home" id="homeIcon" onclick="goToHome()"></button>
+                <button><img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()"></button>
+                <button><img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()"></button>
+                <button><img src="./assets/img/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()"></button>
             </div>
         </section>
     
@@ -94,5 +96,8 @@
             </div>
         </section>
     </main>
+    <footer>
+        Copyright &copy; 2025 Nathalie Dorendorf. All rights reserved.
+    </footer>
 </body>
 </html>

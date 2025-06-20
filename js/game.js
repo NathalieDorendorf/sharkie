@@ -8,7 +8,6 @@ backgroundMusic.volume = 0.5;
 
 function startGame() {
     canvas = document.getElementById('canvas');
-    document.getElementById('startscreen').remove();
     initLevel();
     world = new World(canvas, keyboard, level1);
     playMusic();
@@ -174,6 +173,8 @@ function toggleOverlay(overlayId) {
 }
 
 function goToHome() {
+    world.stopGame();
+    world = null;
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
     if (backgroundMusic && typeof backgroundMusic.pause === 'function') {
