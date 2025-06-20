@@ -193,22 +193,16 @@ function goToHome() {
 
 function togglePlayPauseGame() {
     const playPauseButton = document.getElementById('playToggleIcon');
-    if (world) {
-        if (world.isPaused) {
-            world.resumeGame();
-            playPauseButton.src = './assets/img/pause.svg';
-            playPauseButton.alt = 'Pause Game';
-        } else {
-            world.pauseGame();
-            playPauseButton.src = './assets/img/play.svg';
-            playPauseButton.alt = 'Play Game';
-        }
-    }
-    if (backgroundMusic) {
-        if (world.isPaused) {
-            backgroundMusic.pause();
-        } else {
-            backgroundMusic.play();
-        }
+    if (!world) return;
+    if (!world.isPaused) {
+        world.pauseGame();
+        playPauseButton.src = './assets/img/play.svg';
+        playPauseButton.alt = 'Resume Game';
+        if (backgroundMusic) backgroundMusic.pause();
+    } else {
+        world.resumeGame();
+        playPauseButton.src = './assets/img/pause.svg';
+        playPauseButton.alt = 'Pause Game';
+        if (backgroundMusic) backgroundMusic.play();
     }
 }

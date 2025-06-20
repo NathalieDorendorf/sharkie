@@ -154,7 +154,17 @@ class World {
             clearInterval(i);
         }
     }
+
+    pauseGame() {
+        this.isPaused = true;
+        cancelAnimationFrame(this.animationFrame);
+    }
     
+    resumeGame() {
+        this.isPaused = false;
+        this.run(); // Startet das Spiel erneut (run() enthält wahrscheinlich requestAnimationFrame)
+    }
+        
     showGameOverScreen() {
         let gameOverDiv = document.createElement('div');
         gameOverDiv.id = 'game-over';
