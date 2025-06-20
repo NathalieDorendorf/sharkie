@@ -164,3 +164,50 @@ function toggleDisplayNone(elementId) {
         element.classList.toggle('d-none');
     }
 }
+
+function toggleOverlay(overlayId) {
+    const overlay = document.getElementById(overlayId);
+    if (overlay) {
+        toggleDisplayNone(overlayId);
+        toggleDisplayNone('startscreen');
+    }
+}
+
+function goToHome() {
+    toggleDisplayNone('canvas');
+    toggleDisplayNone('startscreen');
+    if (backgroundMusic && typeof backgroundMusic.pause === 'function') {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+    }
+    const soundIcon = document.getElementById('soundToggleIcon');
+    if (soundIcon) {
+        soundIcon.src = './assets/img/sound-on.svg';
+        soundIcon.alt = 'Sound On';
+    }
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+}
+
+function togglePlayPauseGame() {
+    const playPauseButton = document.getElementById('playToggleIcon');
+    if (world) {
+        if (world.isPaused) {
+            world.resumeGame();
+            playPauseButton.src = './assets/img/pause.svg';
+            playPauseButton.alt = 'Pause Game';
+        } else {
+            world.pauseGame();
+            playPauseButton.src = './assets/img/play.svg';
+            playPauseButton.alt = 'Play Game';
+        }
+    }
+    if (backgroundMusic) {
+        if (world.isPaused) {
+            backgroundMusic.pause();
+        } else {
+            backgroundMusic.play();
+        }
+    }
+}

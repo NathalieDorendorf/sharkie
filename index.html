@@ -42,18 +42,57 @@
     
             </canvas>
             <div class="canvas-icons">
+                <img src="./assets/img/home.svg" alt="Home" id="homeIcon" onclick="goToHome()">
                 <img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()">
                 <img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()">
+                <img src="./assets/img/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()">
             </div>
         </section>
     
         <section class="startscreen" id="startscreen">
             <div class="button-group">
                 <button onclick="startGame()">Start Game</button>
-                <button onclick="openOverlay()">Options</button>
-                <button onclick="showImprint()">Imprint</button>
+                <button onclick="toggleOverlay('optionsScreen')">Options</button>
+                <button onclick="toggleOverlay('imprint')">Imprint</button>
             </div>
-        </section>    
+        </section>
+
+        <section class="overlay d-none" id="optionsScreen">
+            <div class="overlay-content">
+                <h2>Options</h2>
+                <div class="game-controls" id="gameControls">
+                    <h3>Game Controls</h3>
+                    <ul>
+                        <li><strong>Arrow Keys / WASD:</strong> Move your character</li>
+                        <li><strong>Space:</strong> Jump</li>
+                        <li><strong>F:</strong> Throw objects</li>
+                    </ul>
+                </div>
+                <div class="instructions" id="instructions">
+                    <h3>Game Instructions</h3>
+                    <p>Use the arrow keys or WASD to move your character.</p>
+                    <p>Press Space to jump and F to throw objects.</p>
+                </div>
+                <div class="about" id="about">
+                    <h3>About the Game</h3>
+                    <p>Sharkie is an 2D underwater adventure game where you control a shark navigating through various levels, collecting coins and avoiding enemies.</p>
+                    <p>Developed by Nathalie Dorendorf, this game showcases basic game mechanics and object-oriented programming principles.</p>
+                </div>
+                <div class="contact" id="contact">
+                    <h3>Contact</h3>
+                    <p>If you have any questions or feedback, feel free to reach out via email at <a href="mailto:dorendorfnathalie@gmail">dorendorfnathalie@gmail</a></p>
+                </div>
+                <img src="./assets/img/close.svg" alt="Close" id="close" onclick="toggleOverlay('optionsScreen')">
+            </div>
+        </section>
+
+        <section class="overlay d-none" id="imprint">
+            <div class="overlay-content">
+                <h2>Imprint</h2>
+                <p>Imprint details go here.</p>
+                <img src="./assets/img/close.svg" alt="Close" id="close" onclick="toggleOverlay('imprint')">
+            </div>
+        </section>
     </main>
 </body>
 </html>

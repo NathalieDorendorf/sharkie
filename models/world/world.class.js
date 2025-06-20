@@ -148,13 +148,17 @@ class World {
         }
     }
 
-    stopGame() {
-        let highestId = setInterval(() => { }, 0);
-        for (let i = 1; i <= highestId; i++) {
-            clearInterval(i);
-        }
-    }
+    // stopGame() {
+    //     let highestId = setInterval(() => { }, 0);
+    //     for (let i = 1; i <= highestId; i++) {
+    //         clearInterval(i);
+    //     }
+    // }
 
+    stopGame() {
+        clearAllIntervals();
+    }
+    
     showGameOverScreen() {
         let gameOverDiv = document.createElement('div');
         gameOverDiv.id = 'game-over';
