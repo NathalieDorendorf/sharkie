@@ -39,7 +39,7 @@
         <h1>Sharkie</h1>
     </header>
     <main>
-        <section id="fullscreen">
+        <article id="fullscreen">
             <canvas width="720" height="480" id="canvas" class="d-none">
     
             </canvas>
@@ -49,44 +49,74 @@
                 <button><img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()"></button>
                 <button><img src="./assets/img/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()"></button>
             </div>
-        </section>
+        </article>
     
-        <section class="startscreen" id="startscreen">
+        <article class="startscreen" id="startscreen">
             <div class="button-group">
                 <button onclick="startGame()">Start Game</button>
                 <button onclick="toggleOverlay('optionsScreen')">Options</button>
                 <button onclick="toggleOverlay('imprint')">Imprint</button>
             </div>
-        </section>
+        </article>
 
-        <section class="overlay d-none" id="optionsScreen">
+        <article class="overlay d-none" id="optionsScreen">
             <div class="overlay-content">
                 <h2>Options</h2>
-                <div class="game-controls" id="gameControls">
+                <section class="game-controls" id="gameControls">
                     <h3>Game Controls</h3>
-                    <ul>
-                        <li><strong>Arrow Keys / WASD:</strong> Move your character</li>
-                        <li><strong>Space:</strong> Jump</li>
-                        <li><strong>F:</strong> Throw objects</li>
-                    </ul>
-                </div>
-                <div class="instructions" id="instructions">
+                    <div class="game-controls" id="gameControls">
+                        <h3>Game Controls</h3>
+                        <div class="controls-wrapper">
+                            <div class="control-set">
+                                <div class="arrow-keys">
+                                    <div class="key up"><span>▲</span></div>
+                                    <div class="row">
+                                        <div class="key left"><span>◀</span></div>
+                                        <div class="key down"><span>▼</span></div>
+                                        <div class="key right"><span>▶</span></div>
+                                    </div>
+                                </div>
+                                <span class="label">Move Shark</span>
+                            </div>
+                            <div class="control-set">
+                                <div class="wasd-keys">
+                                    <div class="key w"><span>W</span></div>
+                                    <div class="row">
+                                        <div class="key a"><span>A</span></div>
+                                        <div class="key s"><span>S</span></div>
+                                        <div class="key d"><span>D</span></div>
+                                    </div>
+                                </div>
+                                <span class="label">Move Shark</span>
+                            </div>
+                            <div class="control-set">
+                                <div class="key f"><span>F</span></div>
+                                <span class="label">Bubble Attack</span>
+                            </div>
+                            <div class="control-set">
+                                <div class="space-bar">SPACE BAR</div>
+                                <span class="label">Fin Slap Attack</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="instructions" id="instructions">
                     <h3>Game Instructions</h3>
                     <p>Use the arrow keys or WASD to move your character.</p>
                     <p>Press Space to jump and F to throw objects.</p>
-                </div>
-                <div class="about" id="about">
+                </section>
+                <section class="about" id="about">
                     <h3>About the Game</h3>
                     <p>Sharkie is an 2D underwater adventure game where you control a shark navigating through various levels, collecting coins and avoiding enemies.</p>
                     <p>Developed by Nathalie Dorendorf, this game showcases basic game mechanics and object-oriented programming principles.</p>
-                </div>
-                <div class="contact" id="contact">
+                </section>
+                <section class="contact" id="contact">
                     <h3>Contact</h3>
                     <p>If you have any questions or feedback, feel free to reach out via email at <a href="mailto:dorendorfnathalie@gmail">dorendorfnathalie@gmail</a></p>
-                </div>
+                </section>
                 <img src="./assets/img/close.svg" alt="Close" id="close" onclick="toggleOverlay('optionsScreen')">
             </div>
-        </section>
+        </article>
 
         <section class="overlay d-none" id="imprint">
             <div class="overlay-content">
