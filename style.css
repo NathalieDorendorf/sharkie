@@ -143,18 +143,15 @@ button:active {
 }
 
 .overlay-content {
+    position: relative;
     color: rgb(255, 255, 255);
     background-color: rgb(195, 0, 121);
     padding: 2rem;
     border-radius: 20px;
-    max-height: 90vh;
+    max-height: 80%;
     width: 80%;
     text-align: center;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     overflow-y: auto;
 }
 
@@ -191,6 +188,12 @@ button:active {
 
 .overlay-content img#close {
     margin-top: 1rem;
+}
+
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .controls-wrapper {

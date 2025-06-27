@@ -170,6 +170,10 @@ function toggleOverlay(overlayId) {
         toggleDisplayNone(overlayId);
         toggleDisplayNone('startscreen');
     }
+    const content = overlay.querySelector('.overlay-content');
+    if (content) {
+        content.scrollTop = 0;
+    }
 }
 
 function goToHome() {
