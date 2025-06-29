@@ -23,8 +23,10 @@ class World {
 
     draw() {
         this.clearCanvas();
-        this.drawDynamicElements();
+        this.drawBackgroundElements();
         this.drawStaticElements();
+        this.drawCollectableElements();
+        this.drawDynamicElements();
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
@@ -33,6 +35,14 @@ class World {
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawBackgroundElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.lights);
+        this.addObjectsToMap(this.level.barriers);
+        this.ctx.translate(-this.camera_x, 0);
     }
 
     drawStaticElements() {
@@ -44,14 +54,16 @@ class World {
         }
     }
 
-    drawDynamicElements() {
+    drawCollectableElements() {
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.lights);
-        this.addObjectsToMap(this.level.barriers);
-        this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.poison);
+        this.ctx.translate(-this.camera_x, 0);
+    }
+
+    drawDynamicElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.throwableObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
