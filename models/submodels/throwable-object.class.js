@@ -6,25 +6,19 @@ class ThrowableObject extends MovableObject {
 
     IMAGE_BUBBLE_POISONED = ['assets/img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png'];
 
-    constructor(x, y, direction, isPoisoned = false) {
-        if (isPoisoned) {
-            super().loadImage(this.IMAGE_BUBBLE_POISONED[0]);
-        } else {
-            super().loadImage(this.IMAGE_BUBBLE[0]);
-        }
-
+    constructor(x, y) {
+        super().loadImage(this.IMAGE_BUBBLE[0]);
         this.x = x;
         this.y = y;
-        this.direction = direction;
         this.throw();
     }
-    
+
     throw() {
         this.speedY = 15;
         this.speedX = 15;
         this.applyGravity();
-        this.throwInterval = setInterval(() => {
-            this.x += 10 * this.direction;
+        setInterval(() => {
+            this.x += 10;
         }, 25);
     }
 }

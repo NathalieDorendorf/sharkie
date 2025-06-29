@@ -10,7 +10,6 @@ class Character extends MovableObject {
     };
     isSleeping = false;
     lastKeyPress;
-    canThrwowBubble = true;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -250,12 +249,6 @@ class Character extends MovableObject {
                 this.attackFinSlap();
             }
         }, 250);
-
-        setInterval(() => {
-            if (this.world.keyboard.F) {
-                this.throwBubble();
-            }
-        }, 100);
     }
 
     swim() {
@@ -272,31 +265,4 @@ class Character extends MovableObject {
             }
         });
     }
-
-    throwBubble() {
-        if (!this.canThrowBubble) return;
-
-        const isPoisoned = this.collectedPoison > 0;
-        this.canThrowBubble = false;
-
-        const bubbleAnimation = isPoisoned ? this.IMAGES_ATTACK_BUBBLES_POISONED : this.IMAGES_ATTACK_BUBBLES;
-        this.playAnimationOnce(bubbleAnimation);
-
-        setTimeout(() => {
-            const direction = this.otherDirection ? -1 : 1;
-            const bubbleStartX = this.x + this.mouthOffset.x * direction;
-            const bubbleStartY = this.y + this.mouthOffset.y;
-
-            const bubble = new ThrowableObject(bubbleStartX, bubbleStartY, direction, isPoisoned);
-            this.world.throwables.push(bubble);
-
-            if (isPoisoned) {
-                this.collectedPoison--;
-                this.world.statusBarPoison.setPercentage(this.collectedPoison * 10);
-            }
-
-            this.canThrowBubble = true;
-        }, 800);
-    }
-        
 }
