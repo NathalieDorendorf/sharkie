@@ -10,7 +10,7 @@ function startGame() {
     canvas = document.getElementById('canvas');
     initLevel();
     world = new World(canvas, keyboard, level1);
-    playMusic();
+    // playMusic();
     console.log('my Character: ', world.character);
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
