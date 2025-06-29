@@ -136,6 +136,19 @@ class Character extends MovableObject {
 
     constructor() {
         super().loadImage(this.IMAGES_IDLE[0]);
+        this.loadAllImages();
+        this.frameOffset = {
+            x: 45,
+            y: 110,
+            width: 90,
+            height: 165
+        };
+
+        this.animate();
+        this.moving();
+    }
+
+    loadAllImages() {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SWIM);
         this.loadImages(this.IMAGES_SLEEP);
@@ -146,16 +159,6 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT_ELECTRIC_SHOCK);
         this.loadImages(this.IMAGES_DEAD_POISENED);
         this.loadImages(this.IMAGES_DEAD_ELECTRIC_SHOCK);
-
-        this.frameOffset = {
-            x: 45,
-            y: 110,
-            width: 90,
-            height: 165
-        };
-
-        this.animate();
-        this.moving();
     }
 
     animate() {
