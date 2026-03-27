@@ -144,21 +144,28 @@ class World {
     }
 
     checkCollisionsBubbles() {
-        this.throwableObjects.forEach((bubble, bubbleIndex) => {
-            this.level.enemies.forEach((enemy) => {
+        this.throwableObjects = this.throwableObjects.filter((bubble) => {
+            if (bubble.y < -100) return false;
+            for (let enemy of this.level.enemies) {
                 if (!enemy.isDead && bubble.isColliding(enemy)) {
                     enemy.die();
-                    this.throwableObjects.splice(bubbleIndex, 1);
+                    return false;
                 }
-            });
+            }
+            return true;
         });
     }
 
     checkThrowObjects() {
         if (this.keyboard.THROW && !this.throwCooldown) {
             let spawnX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 160;
-            let bubble = new ThrowableObject(spawnX, this.character.y + 100, this.character.otherDirection);
+            let isPoisoned = this.character.collectedPoison > 0;
+            let bubble = new ThrowableObject(spawnX, this.character.y + 100, this.character.otherDirection, isPoisoned);
             this.throwableObjects.push(bubble);
+            if (isPoisoned) {
+                this.character.collectedPoison--;
+                this.statusBarPoison.setPercentage(this.character.collectedPoison * 10);
+            }
             this.throwCooldown = true;
             setTimeout(() => { this.throwCooldown = false; }, 200);
         }
