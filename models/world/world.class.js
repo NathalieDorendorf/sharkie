@@ -107,6 +107,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkCollisionsCollectables();
+            this.checkCollisionsBubbles();
             this.checkThrowObjects();
             // this.checkGameOver();
         }, 100);
@@ -142,10 +143,24 @@ class World {
         });
     }
 
+    checkCollisionsBubbles() {
+        this.throwableObjects.forEach((bubble, bubbleIndex) => {
+            this.level.enemies.forEach((enemy) => {
+                if (!enemy.isDead && bubble.isColliding(enemy)) {
+                    enemy.die();
+                    this.throwableObjects.splice(bubbleIndex, 1);
+                }
+            });
+        });
+    }
+
     checkThrowObjects() {
-        if (this.keyboard.THROW) {
-            let bubble = new ThrowableObject(this.character.x + 160, this.character.y + 100);
+        if (this.keyboard.THROW && !this.throwCooldown) {
+            let spawnX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 160;
+            let bubble = new ThrowableObject(spawnX, this.character.y + 100, this.character.otherDirection);
             this.throwableObjects.push(bubble);
+            this.throwCooldown = true;
+            setTimeout(() => { this.throwCooldown = false; }, 200);
         }
     }
 
