@@ -149,7 +149,4 @@ class MovableObject extends DrawableObject {
         }, 50); // Bewegung alle 50ms updaten
     }
 
-    isDead() {
-        return this.energy == 0;
-    }
 }

@@ -109,7 +109,7 @@ class World {
             this.checkCollisionsCollectables();
             this.checkCollisionsBubbles();
             this.checkThrowObjects();
-            // this.checkGameOver();
+            this.checkGameOver();
         }, 100);
     }
 
@@ -148,7 +148,11 @@ class World {
             if (bubble.y < -100) return false;
             for (let enemy of this.level.enemies) {
                 if (!enemy.isDead && bubble.isColliding(enemy)) {
-                    enemy.die();
+                    if (enemy instanceof Endboss) {
+                        enemy.hit();
+                    } else {
+                        enemy.die();
+                    }
                     return false;
                 }
             }
@@ -172,7 +176,7 @@ class World {
     }
 
     checkGameOver() {
-        if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
+        if (this.character.energy <= 0 && !this.character.isDead) {
             this.character.isDead = true;
             this.stopGame();
             this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
@@ -200,35 +204,10 @@ class World {
     }
         
     showGameOverScreen() {
-        let gameOverDiv = document.createElement('div');
-        gameOverDiv.id = 'game-over';
-        gameOverDiv.innerHTML = `<h1>Game Over</h1>`;
-        gameOverDiv.style.position = 'absolute';
-        gameOverDiv.style.top = '50%';
-        gameOverDiv.style.left = '50%';
-        gameOverDiv.style.transform = 'translate(-50%, -50%)';
-        gameOverDiv.style.color = 'white';
-        gameOverDiv.style.fontSize = '50px';
-        gameOverDiv.style.background = 'rgba(0, 0, 0, 0.7)';
-        gameOverDiv.style.padding = '20px';
-        gameOverDiv.style.borderRadius = '10px';
-        gameOverDiv.style.display = 'flex';
-        gameOverDiv.style.flexDirection = 'column';
-        gameOverDiv.style.justifyContent = 'center';
-        gameOverDiv.style.alignItems = 'center';
-
-        let tryAgainButton = document.createElement('img');
-        tryAgainButton.src = 'assets/img/6.Botones/Try again/Recurso 18.png';
-        tryAgainButton.style.width = '200px';
-        tryAgainButton.style.cursor = 'pointer';
-        tryAgainButton.addEventListener('click', () => this.restartGame());
-
-        gameOverDiv.appendChild(tryAgainButton);
-        document.body.appendChild(gameOverDiv);
+        document.getElementById('game-over').classList.remove('d-none');
     }
 
-    restartGame() {
-        document.getElementById('game-over')?.remove();
-        location.reload();
+    showWinScreen() {
+        document.getElementById('win-screen').classList.remove('d-none');
     }
 }

@@ -6,6 +6,10 @@ let backgroundMusic = new Audio('./assets/audio/background.mp3');
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
 
+function restartGame() {
+    location.reload();
+}
+
 function startGame() {
     canvas = document.getElementById('canvas');
     initLevel();
