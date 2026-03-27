@@ -3,13 +3,22 @@ class Character extends MovableObject {
     width = 220;
     world;
     speed = 10;
-    isDead = false;
+    isSleeping = false;
+    isSwimming = false;
+    isFinSlapping = false;
+    isAttackingBubbles = false;
+    isAttackingBubblesPoisoned = false;
+    isHurtPoisoned = false;
+    isHurtElectric = false;
+    isDeadPoisoned = false;
+    isDeadElectric = false;
+    lastKeyPress;
+    sleepInterval;
+    animationInterval;
     mouthOffset = {
         x: 80, 
         y: 50 
     };
-    isSleeping = false;
-    lastKeyPress;
 
     IMAGES_IDLE = [
         'assets/img/1.Sharkie/1.IDLE/1.png',
@@ -143,7 +152,7 @@ class Character extends MovableObject {
             width: 90,
             height: 165
         };
-
+        this.checkActions();
         this.animate();
         this.moving();
     }
@@ -161,22 +170,80 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD_ELECTRIC_SHOCK);
     }
 
-    animate() {
-        setTimeout(() => this.checkInitialSleep(), 5000);
+    checkActions() {
         setInterval(() => {
-            if (this.isSleeping) return;
-            this.playAnimation(this.IMAGES_IDLE);
-        }, 250);
-        document.addEventListener("keydown", () => this.wakeUp());
-        setInterval(() => this.checkSleep(), 500);
+            this.checkForSwimming();
+            this.checkForFinSlapping();
+            this.checkIsSleeping();
+        }, 100);
     }
 
-    checkInitialSleep() {
-        if (!this.isSleeping && !this.lastKeyPress) {
-            this.isSleeping = true;
-            this.sleep();
-        }
+    animate(FPS = 5) {
+        this.animationInterval = setInterval(() => {
+            if (this.isDeadElectric) {
+                this.playAnimation(this.IMAGES_DEAD_ELECTRIC_SHOCK);
+            } else if (this.isDeadPoisoned) {
+                this.playAnimation(this.IMAGES_DEAD_POISENED);
+            } else if (this.isHurtElectric) {
+                this.playAnimation(this.IMAGES_HURT_ELECTRIC_SHOCK);
+            } else if (this.isHurtPoisoned) {
+                this.playAnimation(this.IMAGES_HURT_POISENED);
+            } else if (this.isAttackingBubblesPoisoned) {
+                this.playAnimation(this.IMAGES_ATTACK_BUBBLES_POISONED);
+            } else if (this.isAttackingBubbles) {
+                this.playAnimation(this.IMAGES_ATTACK_BUBBLES);
+            } else if (this.isFinSlapping) {
+                this.playAnimation(this.IMAGES_ATTACK_FIN_SLAP);
+            } else if (this.isSleeping) {
+                this.sleep(FPS);
+            } else if (this.isSwimming) {
+                this.playAnimation(this.IMAGES_SWIM);
+            } else {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
+        }, 1000 / FPS);
     }
+
+    resetAnimation(FPS) {
+        clearInterval(this.animationInterval);
+        this.animate(FPS);
+    }
+
+    // checkActions() {
+    //     setInterval(() => {
+    //         this.checkForFinSlapping();
+    //     }, 1000 / 30);
+    // }
+
+    // checkForFinSlapping() {
+    //     if (this.world.keyboard.SPACE && !this.isFinSlapping) {
+    //         this.isFinSlapping = true;
+    //         this.currentImage = 0; // Reset to the first frame of the fin slap animation
+    //         this.resetAnimation(30);
+    //         setTimeout(() => {
+    //             this.isFinSlapping = false;
+    //         }, 1000);
+    //     }
+    // }
+
+    // animate() {
+    //     setTimeout(() => this.checkInitialSleep(), 5000);
+    //     setInterval(() => {
+    //         if (this.isSleeping) return;
+    //         this.playAnimation(this.IMAGES_IDLE);
+    //     }, 250);
+    //     document.addEventListener("keydown", () => this.wakeUp());
+    //     setInterval(() => this.checkSleep(), 500);
+    // }
+
+    // checkInitialSleep(FPS = 250) {
+    //     setInterval(() => {
+    //         if (!this.isSleeping && !this.lastKeyPress) {
+    //             this.isSleeping = true;
+    //             this.sleep();
+    //         }
+    //     }, 1000 / FPS);
+    // }
 
     wakeUp() {
         this.isSleeping = false;
@@ -185,17 +252,16 @@ class Character extends MovableObject {
             clearInterval(this.sleepInterval); // Sleep-Animation beenden
             this.sleepInterval = null;
         }
-        this.playAnimation(this.IMAGES_IDLE); // Normale Animation starten
+        this.resetAnimation(5); // Normale Animation starten
     }
 
-    checkSleep() {
+    checkIsSleeping() {
         if (!this.isSleeping && Date.now() - this.lastKeyPress > 3000) {
             this.isSleeping = true;
-            this.sleep();
         }
     }
 
-    sleep() {
+    sleep(FPS = 5) {
         this.playAnimation(this.IMAGES_SLEEP);
         let sleepFrames = this.IMAGES_SLEEP.slice(12, 15); // Bilder 12-14 extrahieren
         this.sleepInterval = setInterval(() => {
@@ -206,7 +272,7 @@ class Character extends MovableObject {
             }
             this.playAnimation(sleepFrames);
             this.sinkToGround();
-        }, 1500);
+        }, 1000 / FPS);
     }
 
     sinkToGround() {
@@ -221,51 +287,91 @@ class Character extends MovableObject {
 
     moving() {
         setInterval(() => {
+            let isMoving = false;
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
+                isMoving = true;
             }
             if (this.world.keyboard.LEFT && this.x > -600) {
                 this.moveLeft();
                 this.otherDirection = true;
+                isMoving = true;
             }
             if (this.world.keyboard.UP && this.y > -100) {
                 this.moveUp();
+                isMoving = true;
             }
             if (this.world.keyboard.DOWN && this.y < 270) {
                 this.moveDown();
+                isMoving = true;
             }
+            if (isMoving) this.lastKeyPress = Date.now(); // Update last key press time
             this.world.camera_x = -this.x + 50;
         }, 1000 / 60);
 
-        setInterval(() => {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                this.swim();
-            }
-        }, 50);
+        // setInterval(() => {
+        //     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        //         this.swim();
+        //     }
+        // }, 50);
 
-        setInterval(() => {
-            if (this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                this.swim();
-            }
-            if (this.world.keyboard.SPACE) {
-                this.attackFinSlap();
-            }
-        }, 250);
+        // setInterval(() => {
+        //     if (this.world.keyboard.UP || this.world.keyboard.DOWN) {
+        //         this.swim();
+        //     }
+        //     if (this.world.keyboard.SPACE) {
+        //         this.attackFinSlap();
+        //     }
+        // }, 250);
     }
 
-    swim() {
-        this.playAnimation(this.IMAGES_SWIM);
+    checkForSwimming() {
+        this.isSwimming = (
+            this.world.keyboard.RIGHT ||
+            this.world.keyboard.LEFT ||
+            this.world.keyboard.UP ||
+            this.world.keyboard.DOWN
+        );
     }
 
-    attackFinSlap() {
-        this.playAnimation(this.IMAGES_ATTACK_FIN_SLAP);
-
-        // Prüfe, ob ein Gegner getroffen wurde
-        this.world.level.enemies.forEach(enemy => {
-            if (this.isColliding(enemy)) {
-                enemy.die(); // Gegner stirbt
-            }
-        });
+    checkForFinSlapping() {
+        if (this.world.keyboard.SPACE && !this.isFinSlapping) {
+            this.isFinSlapping = true;
+            this.lastKeyPress = Date.now();
+            this.currentImage = 0;
+            setTimeout(() => {
+                this.isFinSlapping = false;
+            }, 800);
+        }
     }
+
+    // checkSleepLogic() {
+    //     if (Date.now() - this.lastKeyPress > 5000 && !this.isSleeping) {
+    //         this.isSleeping = true;
+    //         this.currentImage = 0;
+    //     }
+    //     if (this.world.keyboard.UP || this.world.keyboard.DOWN || this.world.keyboard.LEFT || this.world.keyboard.RIGHT || this.world.keyboard.SPACE) {
+    //         this.isSleeping = false;
+    //     }
+    // }
+
+    // sinkToGround() {
+    //     if (this.y < 270) {
+    //         this.y += 0.5;
+    //     }
+    // }
+
+    // swim() {
+    //     this.playAnimation(this.IMAGES_SWIM);
+    // }
+
+    // attackFinSlap() {
+    //     this.playAnimation(this.IMAGES_ATTACK_FIN_SLAP);
+    //     this.world.level.enemies.forEach(enemy => {
+    //         if (this.isColliding(enemy)) {
+    //             enemy.die();
+    //         }
+    //     });
+    // }
 }
