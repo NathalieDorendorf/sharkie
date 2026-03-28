@@ -172,6 +172,7 @@ class Character extends MovableObject {
 
     checkActions() {
         setInterval(() => {
+            if (this.world.isPaused) return;
             this.checkForSwimming();
             this.checkForFinSlapping();
             this.checkIsSleeping();
@@ -180,6 +181,7 @@ class Character extends MovableObject {
 
     animate(FPS = 5) {
         this.animationInterval = setInterval(() => {
+            if (this.world && this.world.isPaused) return;
             if (this.isDeadElectric) {
                 this.playAnimation(this.IMAGES_DEAD_ELECTRIC_SHOCK);
             } else if (this.isDeadPoisoned) {
@@ -287,6 +289,7 @@ class Character extends MovableObject {
 
     moving() {
         setInterval(() => {
+            if (this.world.isPaused) return;
             let isMoving = false;
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();

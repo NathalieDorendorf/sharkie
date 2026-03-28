@@ -206,11 +206,9 @@ function togglePlayPauseGame() {
         world.pauseGame();
         playPauseButton.src = './assets/img/play.svg';
         playPauseButton.alt = 'Resume Game';
-        if (backgroundMusic) backgroundMusic.pause();
     } else {
         world.resumeGame();
         playPauseButton.src = './assets/img/pause.svg';
         playPauseButton.alt = 'Pause Game';
-        if (backgroundMusic) backgroundMusic.play();
     }
 }

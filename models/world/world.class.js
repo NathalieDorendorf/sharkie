@@ -27,10 +27,9 @@ class World {
         this.drawStaticElements();
         this.drawCollectableElements();
         this.drawDynamicElements();
-        let self = this;
-        requestAnimationFrame(function() {
-            self.draw();
-        });
+        if (!this.isPaused) {
+            this.animationFrameId = requestAnimationFrame(() => this.draw());
+        }
     }
 
     clearCanvas() {
@@ -104,7 +103,7 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.runIntervalId = setInterval(() => {
             this.checkCollisions();
             this.checkCollisionsCollectables();
             this.checkCollisionsBubbles();
@@ -195,12 +194,15 @@ class World {
 
     pauseGame() {
         this.isPaused = true;
-        cancelAnimationFrame(this.animationFrame);
+        cancelAnimationFrame(this.animationFrameId);
+        clearInterval(this.runIntervalId);
     }
-    
+
     resumeGame() {
         this.isPaused = false;
-        this.run(); // Startet das Spiel erneut (run() enthält wahrscheinlich requestAnimationFrame)
+        this.character.lastKeyPress = Date.now();
+        this.draw();
+        this.run();
     }
         
     showGameOverScreen() {
