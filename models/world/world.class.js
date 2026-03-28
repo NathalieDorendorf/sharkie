@@ -144,7 +144,10 @@ class World {
 
     checkCollisionsBubbles() {
         this.throwableObjects = this.throwableObjects.filter((bubble) => {
-            if (bubble.y < -100) return false;
+            if (bubble.y < -100) {
+                bubble.destroy();
+                return false;
+            }
             for (let enemy of this.level.enemies) {
                 if (!enemy.isDead && bubble.isColliding(enemy)) {
                     if (enemy instanceof Endboss) {
@@ -152,6 +155,7 @@ class World {
                     } else {
                         enemy.die();
                     }
+                    bubble.destroy();
                     return false;
                 }
             }

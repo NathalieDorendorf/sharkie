@@ -49,10 +49,10 @@ class PufferFishYellow extends Enemy {
     }
 
     animate() {
-        setInterval(() => {
+        this.moveInterval = setInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
-        setInterval(() => {
+        this.animInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_PUFFER_FISH);
         }, 250);
     }

@@ -35,19 +35,20 @@ class ThrowableObject extends MovableObject {
         let direction = this.otherDirection ? -1 : 1;
         let startY = this.y;
         let step = 0;
-        let waveAmplitude = 25;   // Höhe der Welle in px (größer = stärkere Welle)
-        let waveFrequency = 0.08; // Wie schnell die Welle schwingt (größer = kürzere Wellen)
-        let horizontalSpeed = 5;  // Horizontale Fluggeschwindigkeit in px pro Frame
+        let waveAmplitude = 25;
+        let waveFrequency = 0.08;
+        let horizontalSpeed = 5;
 
-        let flyInterval = setInterval(() => {
+        this.flyInterval = setInterval(() => {
             this.x += horizontalSpeed * direction;
             this.y = startY + Math.sin(step * waveFrequency) * waveAmplitude;
             this.rotation += 0.05 * direction;
             step++;
         }, 25);
 
-        setTimeout(() => {
-            clearInterval(flyInterval);
+        this.floatTimeout = setTimeout(() => {
+            clearInterval(this.flyInterval);
+            this.flyInterval = null;
             this.floatUp();
         }, 3000);
     }
@@ -55,10 +56,16 @@ class ThrowableObject extends MovableObject {
     floatUp() {
         let direction = this.otherDirection ? -1 : 1;
         let step = 0;
-        setInterval(() => {
+        this.floatInterval = setInterval(() => {
             this.x += 2 * direction;
             this.y -= 1 + step * 0.05;
             step++;
         }, 25);
+    }
+
+    destroy() {
+        clearInterval(this.flyInterval);
+        clearInterval(this.floatInterval);
+        clearTimeout(this.floatTimeout);
     }
 }

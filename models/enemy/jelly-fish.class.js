@@ -17,13 +17,13 @@ class JellyFish extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        this.animInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_JELLY_FISH_PURPLE);
         }, 250);
     }
 
     animateMoving() {
-        setInterval(() => {
+        this.moveInterval = setInterval(() => {
             this.x -= Math.random() * 0.5;
             this.y -= Math.random() * 0.2;
         }, 1000 / 60);

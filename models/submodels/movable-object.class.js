@@ -123,14 +123,17 @@ class MovableObject extends DrawableObject {
 
     die() {
         this.isDead = true;
-        this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD); // Dead-Animation starten
-
-        // Richtung bestimmen (entgegen der Bewegungsrichtung des Charakters)
-        let direction = this.world.character.otherDirection ? 1 : -1; // Falls Charakter nach links schaut -> Gegner fliegt nach rechts
-
+        this.clearIntervals();
+        this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD);
+        let direction = this.world.character.otherDirection ? 1 : -1;
         setTimeout(() => {
             this.flyOutOfCanvas(direction);
-        }, 500); // 500ms warten, bevor der Gegner wegfliegt
+        }, 500);
+    }
+
+    clearIntervals() {
+        if (this.moveInterval) { clearInterval(this.moveInterval); this.moveInterval = null; }
+        if (this.animInterval) { clearInterval(this.animInterval); this.animInterval = null; }
     }
 
     flyOutOfCanvas(direction) {
