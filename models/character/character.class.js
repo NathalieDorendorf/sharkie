@@ -249,12 +249,16 @@ class Character extends MovableObject {
 
     wakeUp() {
         this.isSleeping = false;
-        this.lastKeyPress = Date.now(); // Reset der Zeitmessung
+        this.lastKeyPress = Date.now();
         if (this.sleepInterval) {
-            clearInterval(this.sleepInterval); // Sleep-Animation beenden
+            clearInterval(this.sleepInterval);
             this.sleepInterval = null;
         }
-        this.resetAnimation(5); // Normale Animation starten
+        if (this.sinkInterval) {
+            clearInterval(this.sinkInterval);
+            this.sinkInterval = null;
+        }
+        this.resetAnimation(5);
     }
 
     checkIsSleeping() {
@@ -264,23 +268,32 @@ class Character extends MovableObject {
     }
 
     sleep(FPS = 5) {
-        this.playAnimation(this.IMAGES_SLEEP);
-        let sleepFrames = this.IMAGES_SLEEP.slice(12, 15); // Bilder 12-14 extrahieren
+        if (this.sleepInterval) return;
+        let introFrames = this.IMAGES_SLEEP.slice(0, 12);
+        let loopFrames = this.IMAGES_SLEEP.slice(12, 15);
+        let introIndex = 0;
         this.sleepInterval = setInterval(() => {
             if (!this.isSleeping) {
                 clearInterval(this.sleepInterval);
                 this.sleepInterval = null;
                 return;
             }
-            this.playAnimation(sleepFrames);
-            this.sinkToGround();
+            if (introIndex < introFrames.length) {
+                this.img = this.imageCache[introFrames[introIndex]];
+                introIndex++;
+            } else {
+                this.playAnimation(loopFrames);
+                this.sinkToGround();
+            }
         }, 1000 / FPS);
     }
 
     sinkToGround() {
-        let sinkInterval = setInterval(() => {
+        if (this.sinkInterval) return;
+        this.sinkInterval = setInterval(() => {
             if (!this.isSleeping || !this.isAboveGround()) {
-                clearInterval(sinkInterval);
+                clearInterval(this.sinkInterval);
+                this.sinkInterval = null;
                 return;
             }
             this.y += 1;
@@ -309,7 +322,10 @@ class Character extends MovableObject {
                 this.moveDown();
                 isMoving = true;
             }
-            if (isMoving) this.lastKeyPress = Date.now(); // Update last key press time
+            if (isMoving) {
+                if (this.isSleeping) this.wakeUp();
+                this.lastKeyPress = Date.now();
+            }
             this.world.camera_x = -this.x + 50;
         }, 1000 / 60);
 
