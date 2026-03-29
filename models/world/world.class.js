@@ -215,5 +215,6 @@ class World {
 
     showWinScreen() {
         document.getElementById('win-screen').classList.remove('d-none');
+        startConfetti();
     }
 }

@@ -5,9 +5,55 @@ let musicOn = false;
 let backgroundMusic = new Audio('./assets/audio/background.mp3');
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
+let winSound = new Audio('./assets/audio/win.mp3');
+winSound.volume = 0.7;
 
 function restartGame() {
     location.reload();
+}
+
+function startConfetti() {
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    confettiCanvas.classList.remove('d-none');
+    const ctx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    const colors = ['#ff595e', '#ffca3a', '#6a4c93', '#1982c4', '#8ac926', '#ff6d00'];
+    const pieces = Array.from({ length: 120 }, () => ({
+        x: Math.random() * confettiCanvas.width,
+        y: Math.random() * -confettiCanvas.height,
+        w: 8 + Math.random() * 8,
+        h: 4 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speed: 2 + Math.random() * 3,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.2,
+        drift: (Math.random() - 0.5) * 1.5,
+    }));
+
+    function drawConfetti() {
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        ctx.globalCompositeOperation = 'source-over';
+        pieces.forEach(p => {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+            p.y += p.speed;
+            p.x += p.drift;
+            p.angle += p.spin;
+            if (p.y > confettiCanvas.height) {
+                p.y = -p.h;
+                p.x = Math.random() * confettiCanvas.width;
+            }
+        });
+        requestAnimationFrame(drawConfetti);
+    }
+    drawConfetti();
+    winSound.play().catch(() => {});
 }
 
 function startGame() {
