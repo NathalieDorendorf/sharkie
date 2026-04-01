@@ -87,7 +87,6 @@ class Character extends MovableObject {
         'assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
         'assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
         'assets/img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
-        'assets/img/1.Sharkie/4.Attack/Bubble trap/Bubble.png'
     ];
 
     IMAGES_ATTACK_BUBBLES_POISONED = [
@@ -99,7 +98,6 @@ class Character extends MovableObject {
         'assets/img/1.Sharkie/4.Attack/Bubble trap/For Whale/6.png',
         'assets/img/1.Sharkie/4.Attack/Bubble trap/For Whale/7.png',
         'assets/img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png',
-        'assets/img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png'
     ];
 
     IMAGES_HURT_POISENED = [
@@ -175,6 +173,7 @@ class Character extends MovableObject {
             if (this.world.isPaused) return;
             this.checkForSwimming();
             this.checkForFinSlapping();
+            this.checkForBubbleAttack();
             this.checkIsSleeping();
         }, 100);
     }
@@ -352,6 +351,31 @@ class Character extends MovableObject {
             this.world.keyboard.UP ||
             this.world.keyboard.DOWN
         );
+    }
+
+    checkForBubbleAttack() {
+        if (this.world.keyboard.THROW) {
+            this.lastKeyPress = Date.now();
+            if (this.isSleeping) this.wakeUp();
+        }
+        if (this.world.keyboard.THROW && !this.isAttackingBubbles && !this.isAttackingBubblesPoisoned) {
+            let isPoisoned = this.collectedPoison > 0;
+            let frameDuration = Math.ceil(this.IMAGES_ATTACK_BUBBLES.length / 15 * 1000);
+            this.resetAnimation(15);
+            if (isPoisoned) {
+                this.isAttackingBubblesPoisoned = true;
+                setTimeout(() => {
+                    this.isAttackingBubblesPoisoned = false;
+                    this.resetAnimation(5);
+                }, frameDuration);
+            } else {
+                this.isAttackingBubbles = true;
+                setTimeout(() => {
+                    this.isAttackingBubbles = false;
+                    this.resetAnimation(5);
+                }, frameDuration);
+            }
+        }
     }
 
     checkForFinSlapping() {

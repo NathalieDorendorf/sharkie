@@ -164,6 +164,7 @@ class World {
     }
 
     checkThrowObjects() {
+        if (this.keyboard.THROW) this.character.lastKeyPress = Date.now();
         if (this.keyboard.THROW && !this.throwCooldown) {
             let spawnX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 160;
             let isPoisoned = this.character.collectedPoison > 0;
