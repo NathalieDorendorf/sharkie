@@ -64,8 +64,20 @@ function startGame() {
     console.log('my Character: ', world.character);
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
+    document.body.style.background = 'black';
     checkOrientation();
     window.addEventListener("resize", checkOrientation);
+    if (document.fullscreenElement) {
+        const canvasContainer = document.getElementById('fullscreen');
+        canvasContainer.style.display = 'flex';
+        canvasContainer.style.alignItems = 'center';
+        canvasContainer.style.justifyContent = 'center';
+        canvasContainer.style.width = '100vw';
+        canvasContainer.style.height = '100vh';
+        canvasContainer.style.background = 'black';
+        canvas.style.width = 'auto';
+        canvas.style.height = '100vh';
+    }
 }
 
 window.addEventListener("keydown", (event) => {
@@ -124,38 +136,16 @@ function checkOrientation() {
 }
 
 function toggleFullscreen() {
-    let fullscreenElement = document.fullscreenElement;
-    let icon = document.getElementById('fullscreenIcon');
-    let canvasContainer = document.getElementById('fullscreen');
-    if (!fullscreenElement) {
-        enterFullscreen(canvasContainer);
-        changeCanvasContainerSize();
-        icon.src = './assets/img/fullscreen-exit.svg';
-        icon.alt = 'Exit Fullscreen';
+    if (!document.fullscreenElement) {
+        const el = document.documentElement;
+        const request = el.requestFullscreen
+            || el.webkitRequestFullscreen
+            || el.mozRequestFullScreen
+            || el.msRequestFullscreen;
+        if (request) request.call(el).catch(() => {});
     } else {
         exitFullscreen();
-        icon.src = './assets/img/fullscreen.svg';
-        icon.alt = 'Enter Fullscreen';
     }
-}
-
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    }
-}
-
-function changeCanvasContainerSize() {
-    setTimeout(() => {
-        canvasContainer.style.width = "100vw";
-        canvasContainer.style.height = "100vh";
-    }, 300);
 }
 
 function exitFullscreen() {
@@ -173,14 +163,27 @@ function exitFullscreen() {
 document.addEventListener('fullscreenchange', () => {
     const isFullscreen = !!document.fullscreenElement;
     const icon = document.getElementById('fullscreenIcon');
-    if (!isFullscreen) {
-        let canvasContainer = document.getElementById('fullscreen');
-        canvasContainer.removeAttribute('style');
-        icon.src = './assets/img/fullscreen.svg';
-        icon.alt = 'Enter Fullscreen';
-    } else {
+    const canvasContainer = document.getElementById('fullscreen');
+    const gameCanvas = document.getElementById('canvas');
+    const gameRunning = !gameCanvas.classList.contains('d-none');
+    if (isFullscreen) {
+        if (gameRunning) {
+            canvasContainer.style.display = 'flex';
+            canvasContainer.style.alignItems = 'center';
+            canvasContainer.style.justifyContent = 'center';
+            canvasContainer.style.width = '100vw';
+            canvasContainer.style.height = '100vh';
+            canvasContainer.style.background = 'black';
+            gameCanvas.style.width = 'auto';
+            gameCanvas.style.height = '100vh';
+        }
         icon.src = './assets/img/fullscreen-exit.svg';
         icon.alt = 'Exit Fullscreen';
+    } else {
+        canvasContainer.removeAttribute('style');
+        gameCanvas.removeAttribute('style');
+        icon.src = './assets/img/fullscreen.svg';
+        icon.alt = 'Enter Fullscreen';
     }
 }, false);
 
@@ -231,6 +234,7 @@ function goToHome() {
     world = null;
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
+    document.body.style.background = '';
     if (backgroundMusic && typeof backgroundMusic.pause === 'function') {
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0;
