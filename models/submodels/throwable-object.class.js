@@ -23,11 +23,24 @@ class ThrowableObject extends MovableObject {
     draw(ctx) {
         let cx = this.x + this.width / 2;
         let cy = this.y + this.height / 2;
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(this.rotation);
-        ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
-        ctx.restore();
+        if (this.isPopping) {
+            let progress = (Date.now() - this.popStartTime) / this.popDuration;
+            let scale = 1 + progress * 1.5;
+            let alpha = 1 - progress;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, alpha);
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+            ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
+            ctx.restore();
+            ctx.globalAlpha = 1;
+        } else {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(this.rotation);
+            ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
+            ctx.restore();
+        }
     }
 
     throw() {
@@ -61,6 +74,13 @@ class ThrowableObject extends MovableObject {
             this.y -= 1 + step * 0.05;
             step++;
         }, 25);
+    }
+
+    pop() {
+        this.isPopping = true;
+        this.popStartTime = Date.now();
+        this.popDuration = 300;
+        this.destroy();
     }
 
     destroy() {

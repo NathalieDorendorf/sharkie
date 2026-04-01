@@ -125,7 +125,7 @@ class MovableObject extends DrawableObject {
         this.isDead = true;
         this.clearIntervals();
         this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD);
-        let direction = this.world.character.otherDirection ? 1 : -1;
+        let direction = world.character.otherDirection ? 1 : -1;
         setTimeout(() => {
             this.flyOutOfCanvas(direction);
         }, 500);
@@ -138,18 +138,16 @@ class MovableObject extends DrawableObject {
 
     flyOutOfCanvas(direction) {
         let flyInterval = setInterval(() => {
-            this.x += 10 * direction; // Gegner fliegt in die bestimmte Richtung
-            this.y -= 5; // Gegner steigt nach oben
-
-            // Wenn Gegner aus dem Canvas ist, entfernen
-            if (this.x < -200 || this.x > this.world.level.level_end_x + 200 || this.y < -200) {
+            this.x += 10 * direction;
+            this.y -= 5;
+            if (this.x < -200 || this.x > world.level.level_end_x + 200 || this.y < -200) {
                 clearInterval(flyInterval);
-                let index = this.world.level.enemies.indexOf(this);
+                let index = world.level.enemies.indexOf(this);
                 if (index > -1) {
-                    this.world.level.enemies.splice(index, 1);
+                    world.level.enemies.splice(index, 1);
                 }
             }
-        }, 50); // Bewegung alle 50ms updaten
+        }, 50);
     }
 
 }

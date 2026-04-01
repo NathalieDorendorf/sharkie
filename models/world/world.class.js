@@ -10,6 +10,7 @@ class World {
     statusBarPoison = new StatusBarPoison();
     statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
+    poppingBubbles = [];
     isThrowing = false;
 
     constructor(canvas, keyboard) {
@@ -63,6 +64,10 @@ class World {
     drawDynamicElements() {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.throwableObjects);
+        this.poppingBubbles = this.poppingBubbles.filter(b => {
+            b.draw(this.ctx);
+            return Date.now() - b.popStartTime < b.popDuration;
+        });
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
@@ -155,7 +160,8 @@ class World {
                     } else {
                         enemy.die();
                     }
-                    bubble.destroy();
+                    bubble.pop();
+                    this.poppingBubbles.push(bubble);
                     return false;
                 }
             }
