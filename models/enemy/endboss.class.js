@@ -83,6 +83,7 @@ class Endboss extends MovableObject {
     animate() {
         let introCount = 0;
         let introInterval = setInterval(() => {
+            if (world && world.isPaused) return;
             if (world.character.x >= 2000) {
                 this.isActive = true;
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
@@ -97,6 +98,7 @@ class Endboss extends MovableObject {
 
     startBehavior() {
         setInterval(() => {
+            if (world && world.isPaused) return;
             if (this.isDead) {
                 this.playAnimation(this.IMAGES_ENDBOSS_DEAD);
             } else if (this.isHurt) {
@@ -109,6 +111,7 @@ class Endboss extends MovableObject {
         }, 200);
 
         setInterval(() => {
+            if (world && world.isPaused) return;
             if (!this.isDead && !this.isHurt) {
                 this.attack();
             }
@@ -118,6 +121,7 @@ class Endboss extends MovableObject {
     attack() {
         this.isAttacking = true;
         let rushInterval = setInterval(() => {
+            if (world && world.isPaused) return;
             this.x -= 15;
         }, 1000 / 60);
 
@@ -125,6 +129,7 @@ class Endboss extends MovableObject {
             clearInterval(rushInterval);
             this.isAttacking = false;
             let returnInterval = setInterval(() => {
+                if (world && world.isPaused) return;
                 if (this.x < this.startX) {
                     this.x += 8;
                 } else {

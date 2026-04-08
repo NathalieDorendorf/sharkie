@@ -23,14 +23,13 @@ class World {
     }
 
     draw() {
+        if (this.isPaused) return;
         this.clearCanvas();
         this.drawBackgroundElements();
         this.drawStaticElements();
         this.drawCollectableElements();
         this.drawDynamicElements();
-        if (!this.isPaused) {
-            this.animationFrameId = requestAnimationFrame(() => this.draw());
-        }
+        this.animationFrameId = requestAnimationFrame(() => this.draw());
     }
 
     clearCanvas() {

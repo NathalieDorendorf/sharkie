@@ -50,9 +50,11 @@ class PufferFishRed extends Enemy {
 
     animate() {
         this.moveInterval = setInterval(() => {
+            if (world && world.isPaused) return;
             this.moveLeft();
         }, 1000 / 60);
         this.animInterval = setInterval(() => {
+            if (world && world.isPaused) return;
             this.playAnimation(this.IMAGES_PUFFER_FISH);
         }, 250);
     }

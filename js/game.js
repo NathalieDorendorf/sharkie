@@ -135,7 +135,8 @@ function checkOrientation() {
 }
 
 function toggleFullscreen() {
-    if (!document.fullscreenElement) {
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    if (!isFullscreen) {
         const el = document.documentElement;
         const request = el.requestFullscreen
             || el.webkitRequestFullscreen
@@ -149,11 +150,11 @@ function toggleFullscreen() {
 
 function exitFullscreen() {
     if (document.exitFullscreen) {
-        document.exitFullscreen();
+        document.exitFullscreen().catch(() => {});
     } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
-    } else if (document.mozRequestFullScreen) {
-        document.mozRequestFullScreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
     } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
     }

@@ -117,6 +117,10 @@ button:active {
     z-index: 101;
 }
 
+.canvas-icons button:focus {
+    outline: none;
+}
+
 .canvas-icons img {
     width: 1em;
     height: 1em;
