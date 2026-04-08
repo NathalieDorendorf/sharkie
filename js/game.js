@@ -64,7 +64,6 @@ function startGame() {
     console.log('my Character: ', world.character);
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
-    document.body.style.background = 'black';
     checkOrientation();
     window.addEventListener("resize", checkOrientation);
     if (document.fullscreenElement) {
@@ -234,7 +233,6 @@ function goToHome() {
     world = null;
     toggleDisplayNone('canvas');
     toggleDisplayNone('startscreen');
-    document.body.style.background = '';
     if (backgroundMusic && typeof backgroundMusic.pause === 'function') {
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0;
