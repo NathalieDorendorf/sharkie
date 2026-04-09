@@ -35,6 +35,12 @@ class PufferFishYellow extends Enemy {
         this.loadImages(this.IMAGES_PUFFER_FISH_TRANSITION);
         this.loadImages(this.IMAGES_PUFFER_FISH_BIG);
         this.loadImages(this.IMAGES_PUFFER_FISH_DEAD);
+        this.IMAGES_PUFFER_FISH_CYCLE = [
+            ...this.IMAGES_PUFFER_FISH,
+            ...this.IMAGES_PUFFER_FISH_TRANSITION,
+            ...this.IMAGES_PUFFER_FISH_BIG,
+            ...[...this.IMAGES_PUFFER_FISH_TRANSITION].reverse()
+        ];
 
         this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
         this.y = 100 + Math.random() * 200;
@@ -55,7 +61,7 @@ class PufferFishYellow extends Enemy {
         }, 1000 / 60);
         this.animInterval = setInterval(() => {
             if (world && world.isPaused) return;
-            this.playAnimation(this.IMAGES_PUFFER_FISH);
+            this.playAnimation(this.IMAGES_PUFFER_FISH_CYCLE);
         }, 250);
     }
 }
