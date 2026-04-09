@@ -6,6 +6,12 @@ function initLevel() {
             new PufferFishGreen(),
             new PufferFishGreen(),
             new PufferFishGreen(),
+            new PufferFishRed(),
+            new PufferFishRed(),
+            new PufferFishRed(),
+            new PufferFishYellow(),
+            new PufferFishYellow(),
+            new PufferFishYellow(),
             new Endboss()
         ],
         [

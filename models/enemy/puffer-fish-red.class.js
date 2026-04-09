@@ -1,4 +1,7 @@
 class PufferFishRed extends Enemy {
+    height = 70;
+    width = 90;
+
     IMAGES_PUFFER_FISH = [
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png',
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim2.png',
@@ -42,7 +45,7 @@ class PufferFishRed extends Enemy {
             ...[...this.IMAGES_PUFFER_FISH_TRANSITION].reverse()
         ];
 
-        this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
+        this.x = 1000 + Math.random() * 600;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
         this.frameOffset = {

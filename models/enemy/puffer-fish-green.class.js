@@ -45,7 +45,7 @@ class PufferFishGreen extends MovableObject {
             ...[...this.IMAGES_PUFFER_FISH_TRANSITION].reverse()
         ];
 
-        this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
+        this.x = 600 + Math.random() * 600;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
         this.frameOffset = {
