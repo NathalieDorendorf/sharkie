@@ -71,19 +71,19 @@ button {
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: 0px 4px 0px #666; 
+    box-shadow: 0px 4px 0px #666;
     transition: all 0.2s ease-in-out;
 }
 
 button:hover {
-    background-color: #a00065; /* Button-Farbe beim Hover */
-    box-shadow: 0px 6px 0px #666; /* Schatten vergrößern beim Hover */
-    transform: translateY(-2px); /* Button leicht nach oben heben */
-}   
+    background-color: #a00065;
+    box-shadow: 0px 6px 0px #666;
+    transform: translateY(-2px);
+}
 
 button:active {
-    box-shadow: 0px 2px 0px #666; /* Schatten verkleinern beim Klicken */
-    transform: translateY(2px); /* Button leicht nach unten drücken */
+    box-shadow: 0px 2px 0px #666;
+    transform: translateY(2px);
 }
 
 .button-group {
@@ -99,7 +99,9 @@ button:active {
     margin-right: 10px;
 }
 
-.startscreen button {
+.startscreen button,
+#win-screen button,
+#game-over button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,12 +127,7 @@ button:active {
     width: 1em;
     height: 1em;
     cursor: pointer;
-    transition: transform 0.2s ease;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
-}
-
-.canvas-icons img:hover {
-    transform: scale(1.1);
 }
 
 
@@ -306,17 +303,12 @@ footer {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 50px;
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     z-index: 100;
 }
 
-#win-screen img {
-    width: 200px;
-    cursor: pointer;
-}
 
 #game-over {
     position: absolute;
@@ -328,17 +320,12 @@ footer {
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 50px;
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     z-index: 100;
 }
 
-#game-over img {
-    width: 200px;
-    cursor: pointer;
-}
 
 @media only screen and (max-width: 720px) {
     canvas {
