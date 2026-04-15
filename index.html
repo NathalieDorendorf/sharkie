@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <title>Sharkie</title>
-    <link rel="icon" href="./assets/img/1.Sharkie/1.IDLE/1.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="./assets/favicon/favicon.ico" sizes="48x48">
+    <link rel="icon" href="./assets/favicon/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="./assets/favicon/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="./assets/favicon/site.webmanifest">
     <link rel="stylesheet" href="./style.css">
     <script src="./models/world/world.class.js"></script>
     <script src="./models/world/level.class.js"></script>
@@ -42,10 +46,10 @@
         <article id="fullscreen">
             <canvas width="720" height="480" id="canvas" class="d-none"></canvas>
             <div class="canvas-icons">
-                <button><img src="./assets/img/home.svg" alt="Home" id="homeIcon" onclick="goToHome()"></button>
-                <button><img src="./assets/img/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()"></button>
-                <button><img src="./assets/img/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()"></button>
-                <button><img src="./assets/img/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()"></button>
+                <button><img src="./assets/icons/home.svg" alt="Home" id="homeIcon" onclick="goToHome()"></button>
+                <button><img src="./assets/icons/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()"></button>
+                <button><img src="./assets/icons/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()"></button>
+                <button><img src="./assets/icons/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()"></button>
             </div>
             <canvas id="confetti-canvas" class="d-none"></canvas>
             <section class="d-none" id="win-screen">
@@ -118,7 +122,7 @@
                     <h3>Contact</h3>
                     <p>If you have any questions or feedback, feel free to reach out via email at <a href="mailto:dorendorfnathalie@gmail">dorendorfnathalie@gmail.com</a></p>
                 </section>
-                <img src="./assets/img/close.svg" alt="Close" id="close" onclick="toggleOverlay('optionsScreen')">
+                <img src="./assets/icons/close.svg" alt="Close" id="close" onclick="toggleOverlay('optionsScreen')">
             </div>
         </article>
 
@@ -127,7 +131,7 @@
             <div class="overlay-content">
                 <h2>Imprint</h2>
                 <p>Imprint details go here.</p>
-                <img src="./assets/img/close.svg" alt="Close" id="close" onclick="toggleOverlay('imprint')">
+                <img src="./assets/icons/close.svg" alt="Close" id="close" onclick="toggleOverlay('imprint')">
             </div>
         </section>
     </main>
