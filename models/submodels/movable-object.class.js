@@ -84,13 +84,13 @@ class MovableObject extends DrawableObject {
     collectCoin(index) {
         this.world.level.coins.splice(index, 1); // Münze aus dem Array entfernen
         this.collectedCoins++; // Anzahl der gesammelten Münzen erhöhen
-        this.world.statusBarCoin.setPercentage(this.collectedCoins * 10); // Status-Bar updaten
+        this.world.statusBarCoin.setPercentage(this.collectedCoins * 5); // Status-Bar updaten
     }
 
     collectPoison(index) {
         this.world.level.poison.splice(index, 1); // Gift aus dem Array entfernen
         this.collectedPoison++; // Anzahl der gesammelten Giftflaschen erhöhen
-        this.world.statusBarPoison.setPercentage(this.collectedPoison * 10); // Status-Bar updaten
+        this.world.statusBarPoison.setPercentage(this.collectedPoison * 5); // Status-Bar updaten
     }
 
     hit() {

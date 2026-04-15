@@ -27,7 +27,7 @@ width = 55;
         super().loadImage(this.IMAGES_POISON[0]);
         this.loadImages(this.IMAGES_POISON);
 
-        this.x = 200 + Math.random() * 1000;
+        this.x = 200 + Math.random() * 4000;
         this.y = 50 + Math.random() * 250;
         this.frameOffset = {
             x: 10,

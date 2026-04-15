@@ -177,7 +177,7 @@ class World {
             this.throwableObjects.push(bubble);
             if (isPoisoned) {
                 this.character.collectedPoison--;
-                this.statusBarPoison.setPercentage(this.character.collectedPoison * 10);
+                this.statusBarPoison.setPercentage(this.character.collectedPoison * 5);
             }
             this.throwCooldown = true;
             setTimeout(() => { this.throwCooldown = false; }, 200);
