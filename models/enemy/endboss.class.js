@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-    x = 2300;
+    x = 4500;
     y = 0;
     width = 500;
     height = 500;
@@ -62,7 +62,7 @@ class Endboss extends MovableObject {
     energy = 100;
     isAttacking = false;
     isHurt = false;
-    startX = 2300;
+    startX = 4500;
 
     constructor() {
         super().loadImage(this.IMAGES_ENDBOSS_INTRODUCE[0]);
@@ -84,7 +84,7 @@ class Endboss extends MovableObject {
         let introCount = 0;
         let introInterval = setInterval(() => {
             if (world && world.isPaused) return;
-            if (world.character.x >= 2000) {
+            if (world.character.x >= 4000) {
                 this.isActive = true;
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
                 introCount++;
