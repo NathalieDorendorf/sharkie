@@ -7,16 +7,16 @@ function initLevel3() {
 
     level3 = new Level(
         [
-            new PufferFishGreen(),
-            new PufferFishGreen(),
-            new PufferFishRed(),
-            new PufferFishRed(),
-            new PufferFishYellow(),
-            new PufferFishYellow(),
-            new JellyFishPurple(),
-            new JellyFishPurple(),
-            new JellyFishYellow(),
-            new JellyFishYellow(),
+            new PufferFishGreen(800),
+            new JellyFishPurple(1150),
+            new PufferFishRed(1500),
+            new JellyFishYellow(1850),
+            new PufferFishYellow(2200),
+            new JellyFishPurple(2550),
+            new PufferFishGreen(2900),
+            new JellyFishYellow(3250),
+            new PufferFishRed(3600),
+            new PufferFishYellow(3900),
             new Endboss()
         ],
         [

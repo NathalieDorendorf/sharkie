@@ -1,33 +1,36 @@
 let level4;
 
 function initLevel4() {
+    const barriers = [
+        new Barrier('assets/img/3. Background/Barrier/3.png', 800, 0),
+        new Barrier('assets/img/3. Background/Barrier/2.png', 1700, 230),
+        new Barrier('assets/img/3. Background/Barrier/3.png', 2600, 0),
+        new Barrier('assets/img/3. Background/Barrier/2.png', 3500, 230)
+    ];
+    const barrierZones = barriers.map(b => ({ x: b.x, y: b.y, width: b.width, height: b.height }));
+
     const collectablePositions = [];
-    const coins = Level.createCollectables(Coin, 20, collectablePositions);
-    const poisons = Level.createCollectables(Poison, 20, collectablePositions);
+    const coins = Level.createCollectables(Coin, 20, collectablePositions, 80, barrierZones);
+    const poisons = Level.createCollectables(Poison, 20, collectablePositions, 80, barrierZones);
 
     level4 = new Level(
         [
-            new PufferFishGreen(),
-            new PufferFishGreen(),
-            new PufferFishRed(),
-            new PufferFishRed(),
-            new PufferFishYellow(),
-            new PufferFishYellow(),
-            new JellyFishPurple(),
-            new JellyFishPurple(),
-            new JellyFishYellow(),
-            new JellyFishYellow(),
+            new JellyFishPurple(800),
+            new PufferFishGreen(1200),
+            new JellyFishYellow(1600),
+            new PufferFishRed(2000),
+            new JellyFishPurple(2400),
+            new PufferFishYellow(2800),
+            new JellyFishYellow(3200),
+            new PufferFishGreen(3600),
+            new PufferFishRed(3900),
+            new PufferFishYellow(4100),
             new Endboss()
         ],
         [
             new Light(),
         ],
-        [
-            new Barrier('assets/img/3. Background/Barrier/2.png', 800, 0),
-            new Barrier('assets/img/3. Background/Barrier/3.png', 1700, 230),
-            new Barrier('assets/img/3. Background/Barrier/2.png', 2600, 0),
-            new Barrier('assets/img/3. Background/Barrier/3.png', 3500, 230)
-        ],
+        barriers,
         [
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/D2.png', -719),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/D2.png', -719),

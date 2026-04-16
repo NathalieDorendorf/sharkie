@@ -1,4 +1,7 @@
 class JellyFishPurple extends MovableObject {
+    height = 80;
+    width = 80;
+
     IMAGES_JELLY_FISH_PURPLE = [
         'assets/img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png',
         'assets/img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png',
@@ -27,10 +30,10 @@ class JellyFishPurple extends MovableObject {
         'assets/img/2.Enemy/2 Jelly fish/Dead/Pink/P4.png'
     ];
 
-    constructor() {
+    constructor(x) {
         super().loadImage(this.IMAGES_JELLY_FISH_PURPLE[0]);
         this.loadImages(this.IMAGES_JELLY_FISH_PURPLE);
-        this.x = 400 + Math.random() * 700;
+        this.x = x !== undefined ? x : 400 + Math.random() * 700;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
         this.animate();

@@ -7,14 +7,14 @@ function initLevel2() {
 
     level2 = new Level(
         [
-            new JellyFishPurple(),
-            new JellyFishPurple(),
-            new JellyFishPurple(),
-            new JellyFishPurple(),
-            new JellyFishYellow(),
-            new JellyFishYellow(),
-            new JellyFishYellow(),
-            new JellyFishYellow(),
+            new JellyFishPurple(800),
+            new JellyFishPurple(1600),
+            new JellyFishPurple(2400),
+            new JellyFishPurple(3200),
+            new JellyFishYellow(1200),
+            new JellyFishYellow(2000),
+            new JellyFishYellow(2800),
+            new JellyFishYellow(3700),
             new Endboss()
         ],
         [

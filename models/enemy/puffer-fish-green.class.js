@@ -32,7 +32,7 @@ class PufferFishGreen extends MovableObject {
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png'
     ];
 
-    constructor() {
+    constructor(x) {
         super().loadImage(this.IMAGES_PUFFER_FISH[0]);
         this.loadImages(this.IMAGES_PUFFER_FISH);
         this.loadImages(this.IMAGES_PUFFER_FISH_TRANSITION);
@@ -45,7 +45,7 @@ class PufferFishGreen extends MovableObject {
             ...[...this.IMAGES_PUFFER_FISH_TRANSITION].reverse()
         ];
 
-        this.x = 600 + Math.random() * 600;
+        this.x = x !== undefined ? x : 600 + Math.random() * 600;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
         this.frameOffset = {

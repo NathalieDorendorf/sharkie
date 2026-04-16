@@ -1,6 +1,6 @@
 class Barrier extends MovableObject {
-    width = 200;
-    height = 200;
+    width = 300;
+    height = 300;
 
     IMAGES_BARRIERS = [
         'assets/img/3. Background/Barrier/2.png',

@@ -16,7 +16,7 @@ class Level {
         this.poison = poison;
     }
 
-    static createCollectables(ClassType, count, usedPositions, minDistance = 80) {
+    static createCollectables(ClassType, count, usedPositions, minDistance = 80, excludeZones = []) {
         const items = [];
         for (let i = 0; i < count; i++) {
             let x, y, attempts = 0;
@@ -25,8 +25,10 @@ class Level {
                 y = 50 + Math.random() * 250;
                 attempts++;
             } while (
-                attempts < 100 &&
-                usedPositions.some(p => Math.abs(p.x - x) < minDistance && Math.abs(p.y - y) < minDistance)
+                attempts < 100 && (
+                    usedPositions.some(p => Math.abs(p.x - x) < minDistance && Math.abs(p.y - y) < minDistance) ||
+                    excludeZones.some(z => x < z.x + z.width + 20 && x + 60 > z.x - 20 && y < z.y + z.height + 20 && y + 60 > z.y - 20)
+                )
             );
             const item = new ClassType();
             item.x = x;
