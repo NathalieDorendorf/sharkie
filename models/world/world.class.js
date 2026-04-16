@@ -153,6 +153,7 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach(enemy => {
+            if (enemy.isDead) return;
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBarCharacter.setPercentage(this.character.energy);
@@ -191,12 +192,15 @@ class World {
                 if (!enemy.isDead && bubble.isColliding(enemy)) {
                     if (enemy instanceof Endboss) {
                         enemy.hit();
-                    } else {
+                        bubble.pop();
+                        this.poppingBubbles.push(bubble);
+                        return false;
+                    } else if (enemy instanceof JellyFishPurple || enemy instanceof JellyFishYellow) {
                         enemy.die();
+                        bubble.pop();
+                        this.poppingBubbles.push(bubble);
+                        return false;
                     }
-                    bubble.pop();
-                    this.poppingBubbles.push(bubble);
-                    return false;
                 }
             }
             return true;
