@@ -1,6 +1,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let currentLevel = 1;
+const MAX_LEVEL = 4;
 let musicOn = false;
 let backgroundMusic = new Audio('./assets/audio/background.mp3');
 backgroundMusic.loop = true;
@@ -10,6 +12,20 @@ winSound.volume = 0.7;
 
 function restartGame() {
     location.reload();
+}
+
+function nextLevel() {
+    currentLevel++;
+    world.stopGame();
+    document.getElementById('win-screen').classList.add('d-none');
+    document.getElementById('confetti-canvas').classList.add('d-none');
+
+    if (currentLevel === 2) initLevel2();
+    else if (currentLevel === 3) initLevel3();
+    else if (currentLevel === 4) initLevel4();
+
+    const levelMap = { 1: level1, 2: level2, 3: level3, 4: level4 };
+    world = new World(canvas, keyboard, levelMap[currentLevel]);
 }
 
 function startConfetti() {
@@ -58,6 +74,7 @@ function startConfetti() {
 
 function startGame() {
     canvas = document.getElementById('canvas');
+    currentLevel = 1;
     initLevel();
     world = new World(canvas, keyboard, level1);
     // playMusic();

@@ -29,13 +29,16 @@
     <script src="./models/collectable/coin.class.js"></script>
     <script src="./models/collectable/poison.class.js"></script>
     <script src="./models/enemy/enemy.class.js"></script>
-    <script src="./models/enemy/jelly-fish.class.js"></script>
+    <script src="./models/enemy/jelly-fish-purple.class.js"></script>
+    <script src="./models/enemy/jelly-fish-yellow.class.js"></script>
     <script src="./models/enemy/puffer-fish-green.class.js"></script>
     <script src="./models/enemy/puffer-fish-red.class.js"></script>
     <script src="./models/enemy/puffer-fish-yellow.class.js"></script>
     <script src="./models/enemy/endboss.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./levels/level2.js"></script>
+    <script src="./levels/level3.js"></script>
+    <script src="./levels/level4.js"></script>
     <script src="./js/game.js"></script>
 </head>
 <body>
@@ -54,7 +57,7 @@
             <canvas id="confetti-canvas" class="d-none"></canvas>
             <section class="d-none" id="win-screen">
                 <h1>You Win!</h1>
-                <button onclick="restartGame()">Try Again</button>
+                <button id="win-btn" onclick="restartGame()">Try Again</button>
             </section>
             <section class="d-none" id="game-over">
                 <h1>Game Over</h1>

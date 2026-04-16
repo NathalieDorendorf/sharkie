@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;
+    level;
     canvas;
     ctx;
     keyboard;
@@ -13,10 +13,11 @@ class World {
     poppingBubbles = [];
     isThrowing = false;
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, level) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = level;
         this.draw();
         this.setWorld();
         this.run();
@@ -111,9 +112,43 @@ class World {
             this.checkCollisions();
             this.checkCollisionsCollectables();
             this.checkCollisionsBubbles();
+            this.checkBarrierCollisions();
             this.checkThrowObjects();
             this.checkGameOver();
         }, 100);
+    }
+
+    checkBarrierCollisions() {
+        this.level.barriers.forEach(barrier => {
+            if (!this.character.isColliding(barrier)) return;
+
+            const charLeft = this.character.x + this.character.frameOffset.x;
+            const charRight = charLeft + (this.character.width - this.character.frameOffset.width);
+            const charTop = this.character.y + this.character.frameOffset.y;
+            const charBottom = charTop + (this.character.height - this.character.frameOffset.height);
+
+            const barLeft = barrier.x + barrier.frameOffset.x;
+            const barRight = barLeft + (barrier.width - barrier.frameOffset.width);
+            const barTop = barrier.y + barrier.frameOffset.y;
+            const barBottom = barTop + (barrier.height - barrier.frameOffset.height);
+
+            const overlapLeft = charRight - barLeft;
+            const overlapRight = barRight - charLeft;
+            const overlapTop = charBottom - barTop;
+            const overlapBottom = barBottom - charTop;
+
+            const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+            if (minOverlap === overlapLeft) {
+                this.character.x -= overlapLeft;
+            } else if (minOverlap === overlapRight) {
+                this.character.x += overlapRight;
+            } else if (minOverlap === overlapTop) {
+                this.character.y -= overlapTop;
+            } else {
+                this.character.y += overlapBottom;
+            }
+        });
     }
 
     checkCollisions() {
@@ -220,6 +255,14 @@ class World {
     }
 
     showWinScreen() {
+        const winBtn = document.getElementById('win-btn');
+        if (currentLevel >= MAX_LEVEL) {
+            winBtn.textContent = 'Restart';
+            winBtn.onclick = restartGame;
+        } else {
+            winBtn.textContent = 'Next Level';
+            winBtn.onclick = nextLevel;
+        }
         document.getElementById('win-screen').classList.remove('d-none');
         startConfetti();
     }

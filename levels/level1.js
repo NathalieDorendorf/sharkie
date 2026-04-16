@@ -21,6 +21,7 @@ function initLevel() {
         [
             new Light(),
         ],
+        [],
         [
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', -719),

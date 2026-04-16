@@ -1,6 +1,6 @@
 let level3;
 
-function initLevel() {
+function initLevel3() {
     const collectablePositions = [];
     const coins = Level.createCollectables(Coin, 20, collectablePositions);
     const poisons = Level.createCollectables(Poison, 20, collectablePositions);
@@ -22,6 +22,7 @@ function initLevel() {
         [
             new Light(),
         ],
+        [],
         [
             new BackgroundObject('./assets/img/3. Background/Layers/5. Water/L2.png', -719),
             new BackgroundObject('./assets/img/3. Background/Layers/4.Fondo 2/L2.png', -719),
