@@ -112,6 +112,7 @@ class World {
             this.checkCollisions();
             this.checkCollisionsCollectables();
             this.checkCollisionsBubbles();
+            this.checkFinSlapCollisions();
             this.checkBarrierCollisions();
             this.checkThrowObjects();
             this.checkGameOver();
@@ -151,15 +152,32 @@ class World {
         });
     }
 
+    checkFinSlapCollisions() {
+        if (!this.character.isFinSlapping) return;
+        this.level.enemies.forEach(enemy => {
+            if (enemy.isDead) return;
+            if (enemy instanceof JellyFishPurple || enemy instanceof JellyFishYellow) return;
+            if (enemy instanceof Endboss) return;
+            if (this.character.isColliding(enemy)) {
+                enemy.die();
+            }
+        });
+    }
+
     checkCollisions() {
         this.level.enemies.forEach(enemy => {
             if (enemy.isDead) return;
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
+                if (enemy instanceof JellyFishPurple || enemy instanceof JellyFishYellow) {
+                    this.character.hitElectric();
+                } else {
+                    this.character.hit();
+                }
                 this.statusBarCharacter.setPercentage(this.character.energy);
             }
         });
     }
+
 
     checkCollisionsCollectables() {
         this.checkCollisionsCoins();
@@ -227,7 +245,19 @@ class World {
         if (this.character.energy <= 0 && !this.character.isDead) {
             this.character.isDead = true;
             this.stopGame();
-            this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
+            if (this.character.lastDeathType === 'electric') {
+                this.character.playAnimationOnce(this.character.IMAGES_DEAD_ELECTRIC_SHOCK);
+                const groundY = 480 - this.character.height;
+                const sinkInterval = setInterval(() => {
+                    if (this.character.y < groundY) {
+                        this.character.y += 1;
+                    } else {
+                        clearInterval(sinkInterval);
+                    }
+                }, 1000 / 60);
+            } else {
+                this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
+            }
             setTimeout(() => {
                 this.showGameOverScreen();
             }, 3000);

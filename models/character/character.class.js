@@ -13,6 +13,7 @@ class Character extends MovableObject {
     isDeadPoisoned = false;
     isDeadElectric = false;
     lastKeyPress;
+    hasActed = false;
     sleepInterval;
     animationInterval;
     mouthOffset = {
@@ -144,6 +145,7 @@ class Character extends MovableObject {
     constructor() {
         super().loadImage(this.IMAGES_IDLE[0]);
         this.loadAllImages();
+        this.lastKeyPress = Date.now();
         this.frameOffset = {
             x: 45,
             y: 110,
@@ -261,7 +263,9 @@ class Character extends MovableObject {
     }
 
     checkIsSleeping() {
-        if (!this.isSleeping && Date.now() - this.lastKeyPress > 3000) {
+        if (this.isSleeping || this.isHurtPoisoned || this.isHurtElectric) return;
+        const threshold = this.hasActed ? 4000 : 8000;
+        if (Date.now() - this.lastKeyPress > threshold) {
             this.isSleeping = true;
         }
     }
@@ -324,6 +328,7 @@ class Character extends MovableObject {
             if (isMoving) {
                 if (this.isSleeping) this.wakeUp();
                 this.lastKeyPress = Date.now();
+                this.hasActed = true;
             }
             this.world.camera_x = -this.x + 50;
         }, 1000 / 60);
@@ -356,6 +361,7 @@ class Character extends MovableObject {
     checkForBubbleAttack() {
         if (this.world.keyboard.THROW) {
             this.lastKeyPress = Date.now();
+            this.hasActed = true;
             if (this.isSleeping) this.wakeUp();
         }
         if (this.world.keyboard.THROW && !this.isAttackingBubbles && !this.isAttackingBubblesPoisoned) {
@@ -378,14 +384,68 @@ class Character extends MovableObject {
         }
     }
 
+    hitElectric() {
+        if (this.isHurtElectric || this.isDead) return;
+        this.energy -= 20;
+        if (this.energy < 0) this.energy = 0;
+        this.lastHit = new Date().getTime();
+        this.lastKeyPress = Date.now();
+        this.hasActed = true;
+        this.lastDeathType = 'electric';
+        if (this.isSleeping) this.wakeUp();
+        if (this.energy <= 0) return;
+        this.isHurtElectric = true;
+        this.currentImage = 0;
+        let bounceDirection = this.otherDirection ? 1 : -1;
+        let bounceInterval = setInterval(() => {
+            this.x += bounceDirection * 5;
+        }, 1000 / 60);
+        let frameDuration = Math.ceil(this.IMAGES_HURT_ELECTRIC_SHOCK.length / 10 * 1000);
+        this.resetAnimation(10);
+        setTimeout(() => {
+            clearInterval(bounceInterval);
+            this.isHurtElectric = false;
+            this.resetAnimation(5);
+        }, frameDuration);
+    }
+
+    hit() {
+        if (this.isHurtPoisoned || this.isDead) return;
+        this.energy -= 20;
+        if (this.energy < 0) this.energy = 0;
+        this.lastHit = new Date().getTime();
+        this.lastKeyPress = Date.now();
+        this.hasActed = true;
+        if (this.isSleeping) this.wakeUp();
+        if (this.energy <= 0) return;
+        this.isHurtPoisoned = true;
+        this.currentImage = 0;
+        let bounceDirection = this.otherDirection ? 1 : -1;
+        let bounceInterval = setInterval(() => {
+            this.x += bounceDirection * 5;
+        }, 1000 / 60);
+        let frameDuration = Math.ceil(this.IMAGES_HURT_POISENED.length / 10 * 1000);
+        this.resetAnimation(10);
+        setTimeout(() => {
+            clearInterval(bounceInterval);
+            this.isHurtPoisoned = false;
+            this.resetAnimation(5);
+        }, frameDuration);
+    }
+
     checkForFinSlapping() {
         if (this.world.keyboard.SPACE && !this.isFinSlapping) {
+            if (this.isSleeping) this.wakeUp();
             this.isFinSlapping = true;
             this.lastKeyPress = Date.now();
+            this.hasActed = true;
             this.currentImage = 0;
+            let frameDuration = Math.ceil(this.IMAGES_ATTACK_FIN_SLAP.length / 15 * 1000);
+            this.resetAnimation(15);
             setTimeout(() => {
                 this.isFinSlapping = false;
-            }, 800);
+                this.resetAnimation(5);
+            }, frameDuration);
         }
     }
 
