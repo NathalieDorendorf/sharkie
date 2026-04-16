@@ -14,6 +14,9 @@ class Character extends MovableObject {
     isDeadElectric = false;
     lastKeyPress;
     hasActed = false;
+    vx = 0;
+    vy = 0;
+    tiltAngle = 0;
     sleepInterval;
     animationInterval;
     mouthOffset = {
@@ -155,6 +158,14 @@ class Character extends MovableObject {
         this.checkActions();
         this.animate();
         this.moving();
+    }
+
+    draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+        ctx.rotate(this.tiltAngle);
+        ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
+        ctx.restore();
     }
 
     loadAllImages() {
@@ -304,27 +315,46 @@ class Character extends MovableObject {
     }
 
     moving() {
+        const acceleration = 1.5;
+        const friction = 0.8;
+        const maxSpeed = this.speed;
+
         setInterval(() => {
             if (this.world.isPaused) return;
             let isMoving = false;
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.moveRight();
+
+            if (this.world.keyboard.RIGHT) {
+                this.vx = Math.min(this.vx + acceleration, maxSpeed);
                 this.otherDirection = false;
                 isMoving = true;
-            }
-            if (this.world.keyboard.LEFT && this.x > -600) {
-                this.moveLeft();
+            } else if (this.world.keyboard.LEFT) {
+                this.vx = Math.max(this.vx - acceleration, -maxSpeed);
                 this.otherDirection = true;
                 isMoving = true;
+            } else {
+                this.vx *= friction;
+                if (Math.abs(this.vx) < 0.2) this.vx = 0;
             }
-            if (this.world.keyboard.UP && this.y > -100) {
-                this.moveUp();
+
+            if (this.world.keyboard.UP) {
+                this.vy = Math.max(this.vy - acceleration, -maxSpeed);
                 isMoving = true;
-            }
-            if (this.world.keyboard.DOWN && this.y < 270) {
-                this.moveDown();
+            } else if (this.world.keyboard.DOWN) {
+                this.vy = Math.min(this.vy + acceleration, maxSpeed);
                 isMoving = true;
+            } else {
+                this.vy *= friction;
+                if (Math.abs(this.vy) < 0.2) this.vy = 0;
             }
+
+            if (this.vx !== 0 || this.vy !== 0) {
+                this.x = Math.max(-600, Math.min(this.x + this.vx, this.world.level.level_end_x));
+                this.y = Math.max(-100, Math.min(this.y + this.vy, 270));
+            }
+
+            const targetTilt = (this.vy / maxSpeed) * 25 * (Math.PI / 180);
+            this.tiltAngle += (targetTilt - this.tiltAngle) * 0.1;
+
             if (isMoving) {
                 if (this.isSleeping) this.wakeUp();
                 this.lastKeyPress = Date.now();
@@ -350,12 +380,16 @@ class Character extends MovableObject {
     }
 
     checkForSwimming() {
+        const wasSwimming = this.isSwimming;
         this.isSwimming = (
             this.world.keyboard.RIGHT ||
             this.world.keyboard.LEFT ||
             this.world.keyboard.UP ||
             this.world.keyboard.DOWN
         );
+        if (this.isSwimming !== wasSwimming && !this.isFinSlapping && !this.isAttackingBubbles && !this.isAttackingBubblesPoisoned) {
+            this.resetAnimation(this.isSwimming ? 10 : 5);
+        }
     }
 
     checkForBubbleAttack() {
