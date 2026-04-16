@@ -1,21 +1,22 @@
-let level1;
+let level3;
 
 function initLevel() {
     const collectablePositions = [];
     const coins = Level.createCollectables(Coin, 20, collectablePositions);
     const poisons = Level.createCollectables(Poison, 20, collectablePositions);
 
-    level1 = new Level(
+    level3 = new Level(
         [
             new PufferFishGreen(),
             new PufferFishGreen(),
-            new PufferFishGreen(),
-            new PufferFishRed(),
             new PufferFishRed(),
             new PufferFishRed(),
             new PufferFishYellow(),
             new PufferFishYellow(),
-            new PufferFishYellow(),
+            new JellyFishPurple(),
+            new JellyFishPurple(),
+            new JellyFishYellow(),
+            new JellyFishYellow(),
             new Endboss()
         ],
         [

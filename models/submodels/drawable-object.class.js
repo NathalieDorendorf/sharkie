@@ -41,7 +41,7 @@ class DrawableObject {
     // }
 
     drawSmallFrame(ctx) {
-        if (this instanceof Character || this instanceof JellyFish || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishYellow || this instanceof Endboss || this instanceof Coin || this instanceof Poison) {
+        if (this instanceof Character || this instanceof JellyFishPurple || this instanceof JellyFishYellow || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishYellow || this instanceof Endboss || this instanceof Coin || this instanceof Poison) {
             ctx.beginPath();
             ctx.lineWidth = '2';
             ctx.strokeStyle = 'red';
