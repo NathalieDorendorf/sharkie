@@ -62,6 +62,7 @@ class Endboss extends MovableObject {
     energy = 100;
     isAttacking = false;
     isHurt = false;
+    isIntroducing = true;
     startX = 4500;
 
     constructor() {
@@ -90,6 +91,7 @@ class Endboss extends MovableObject {
                 introCount++;
                 if (introCount >= this.IMAGES_ENDBOSS_INTRODUCE.length) {
                     clearInterval(introInterval);
+                    this.isIntroducing = false;
                     this.startBehavior();
                 }
             }
@@ -115,7 +117,7 @@ class Endboss extends MovableObject {
             if (!this.isDead && !this.isHurt) {
                 this.attack();
             }
-        }, 3000);
+        }, 5000);
     }
 
     attack() {
@@ -140,7 +142,7 @@ class Endboss extends MovableObject {
     }
 
     hit() {
-        if (this.isDead || this.isHurt) return;
+        if (this.isDead || this.isHurt || this.isIntroducing) return;
         this.energy -= 34;
         if (this.energy <= 0) {
             this.energy = 0;

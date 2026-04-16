@@ -167,6 +167,7 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach(enemy => {
             if (enemy.isDead) return;
+            if (enemy instanceof Endboss && enemy.isIntroducing) return;
             if (this.character.isColliding(enemy)) {
                 if (enemy instanceof JellyFishPurple || enemy instanceof JellyFishYellow) {
                     this.character.hitElectric();
