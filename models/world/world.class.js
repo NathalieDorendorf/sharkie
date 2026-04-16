@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    level = level1;
+    level;
     canvas;
     ctx;
     keyboard;
@@ -10,29 +10,39 @@ class World {
     statusBarPoison = new StatusBarPoison();
     statusBarEndboss = new StatusBarEndboss();
     throwableObjects = [];
+    poppingBubbles = [];
     isThrowing = false;
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, level) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = level;
         this.draw();
         this.setWorld();
         this.run();
     }
 
     draw() {
+        if (this.isPaused) return;
         this.clearCanvas();
-        this.drawDynamicElements();
+        this.drawBackgroundElements();
         this.drawStaticElements();
-        let self = this;
-        requestAnimationFrame(function() {
-            self.draw();
-        });
+        this.drawCollectableElements();
+        this.drawDynamicElements();
+        this.animationFrameId = requestAnimationFrame(() => this.draw());
     }
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawBackgroundElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.lights);
+        this.addObjectsToMap(this.level.barriers);
+        this.ctx.translate(-this.camera_x, 0);
     }
 
     drawStaticElements() {
@@ -44,14 +54,20 @@ class World {
         }
     }
 
-    drawDynamicElements() {
+    drawCollectableElements() {
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.lights);
-        this.addObjectsToMap(this.level.barriers);
-        this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.poison);
+        this.ctx.translate(-this.camera_x, 0);
+    }
+
+    drawDynamicElements() {
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.throwableObjects);
+        this.poppingBubbles = this.poppingBubbles.filter(b => {
+            b.draw(this.ctx);
+            return Date.now() - b.popStartTime < b.popDuration;
+        });
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
@@ -68,7 +84,7 @@ class World {
             this.flipImage(movableObject);
         }
         movableObject.draw(this.ctx);
-        movableObject.drawFrame(this.ctx);
+        // movableObject.drawFrame(this.ctx);
         movableObject.drawSmallFrame(this.ctx);
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
@@ -92,12 +108,47 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.runIntervalId = setInterval(() => {
             this.checkCollisions();
             this.checkCollisionsCollectables();
+            this.checkCollisionsBubbles();
+            this.checkBarrierCollisions();
             this.checkThrowObjects();
-            // this.checkGameOver();
+            this.checkGameOver();
         }, 100);
+    }
+
+    checkBarrierCollisions() {
+        this.level.barriers.forEach(barrier => {
+            if (!this.character.isColliding(barrier)) return;
+
+            const charLeft = this.character.x + this.character.frameOffset.x;
+            const charRight = charLeft + (this.character.width - this.character.frameOffset.width);
+            const charTop = this.character.y + this.character.frameOffset.y;
+            const charBottom = charTop + (this.character.height - this.character.frameOffset.height);
+
+            const barLeft = barrier.x + barrier.frameOffset.x;
+            const barRight = barLeft + (barrier.width - barrier.frameOffset.width);
+            const barTop = barrier.y + barrier.frameOffset.y;
+            const barBottom = barTop + (barrier.height - barrier.frameOffset.height);
+
+            const overlapLeft = charRight - barLeft;
+            const overlapRight = barRight - charLeft;
+            const overlapTop = charBottom - barTop;
+            const overlapBottom = barBottom - charTop;
+
+            const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+            if (minOverlap === overlapLeft) {
+                this.character.x -= overlapLeft;
+            } else if (minOverlap === overlapRight) {
+                this.character.x += overlapRight;
+            } else if (minOverlap === overlapTop) {
+                this.character.y -= overlapTop;
+            } else {
+                this.character.y += overlapBottom;
+            }
+        });
     }
 
     checkCollisions() {
@@ -130,15 +181,46 @@ class World {
         });
     }
 
+    checkCollisionsBubbles() {
+        this.throwableObjects = this.throwableObjects.filter((bubble) => {
+            if (bubble.y < -100) {
+                bubble.destroy();
+                return false;
+            }
+            for (let enemy of this.level.enemies) {
+                if (!enemy.isDead && bubble.isColliding(enemy)) {
+                    if (enemy instanceof Endboss) {
+                        enemy.hit();
+                    } else {
+                        enemy.die();
+                    }
+                    bubble.pop();
+                    this.poppingBubbles.push(bubble);
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
     checkThrowObjects() {
-        if (this.keyboard.THROW) {
-            let bubble = new ThrowableObject(this.character.x + 160, this.character.y + 100);
+        if (this.keyboard.THROW) this.character.lastKeyPress = Date.now();
+        if (this.keyboard.THROW && !this.throwCooldown) {
+            let spawnX = this.character.otherDirection ? this.character.x - 30 : this.character.x + 160;
+            let isPoisoned = this.character.collectedPoison > 0;
+            let bubble = new ThrowableObject(spawnX, this.character.y + 100, this.character.otherDirection, isPoisoned);
             this.throwableObjects.push(bubble);
+            if (isPoisoned) {
+                this.character.collectedPoison--;
+                this.statusBarPoison.setPercentage(this.character.collectedPoison * 5);
+            }
+            this.throwCooldown = true;
+            setTimeout(() => { this.throwCooldown = false; }, 200);
         }
     }
 
     checkGameOver() {
-        if (this.statusBarCharacter.resolveImageIndex() === 0 && !this.character.isDead) {
+        if (this.character.energy <= 0 && !this.character.isDead) {
             this.character.isDead = true;
             this.stopGame();
             this.character.playAnimationOnce(this.character.IMAGES_DEAD_POISENED);
@@ -155,36 +237,33 @@ class World {
         }
     }
 
-    showGameOverScreen() {
-        let gameOverDiv = document.createElement('div');
-        gameOverDiv.id = 'game-over';
-        gameOverDiv.innerHTML = `<h1>Game Over</h1>`;
-        gameOverDiv.style.position = 'absolute';
-        gameOverDiv.style.top = '50%';
-        gameOverDiv.style.left = '50%';
-        gameOverDiv.style.transform = 'translate(-50%, -50%)';
-        gameOverDiv.style.color = 'white';
-        gameOverDiv.style.fontSize = '50px';
-        gameOverDiv.style.background = 'rgba(0, 0, 0, 0.7)';
-        gameOverDiv.style.padding = '20px';
-        gameOverDiv.style.borderRadius = '10px';
-        gameOverDiv.style.display = 'flex';
-        gameOverDiv.style.flexDirection = 'column';
-        gameOverDiv.style.justifyContent = 'center';
-        gameOverDiv.style.alignItems = 'center';
-
-        let tryAgainButton = document.createElement('img');
-        tryAgainButton.src = 'assets/img/6.Botones/Try again/Recurso 18.png';
-        tryAgainButton.style.width = '200px';
-        tryAgainButton.style.cursor = 'pointer';
-        tryAgainButton.addEventListener('click', () => this.restartGame());
-
-        gameOverDiv.appendChild(tryAgainButton);
-        document.body.appendChild(gameOverDiv);
+    pauseGame() {
+        this.isPaused = true;
+        cancelAnimationFrame(this.animationFrameId);
+        clearInterval(this.runIntervalId);
     }
 
-    restartGame() {
-        document.getElementById('game-over')?.remove();
-        location.reload();
+    resumeGame() {
+        this.isPaused = false;
+        this.character.lastKeyPress = Date.now();
+        this.draw();
+        this.run();
+    }
+        
+    showGameOverScreen() {
+        document.getElementById('game-over').classList.remove('d-none');
+    }
+
+    showWinScreen() {
+        const winBtn = document.getElementById('win-btn');
+        if (currentLevel >= MAX_LEVEL) {
+            winBtn.textContent = 'Restart';
+            winBtn.onclick = restartGame;
+        } else {
+            winBtn.textContent = 'Next Level';
+            winBtn.onclick = nextLevel;
+        }
+        document.getElementById('win-screen').classList.remove('d-none');
+        startConfetti();
     }
 }

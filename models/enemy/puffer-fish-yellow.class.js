@@ -1,4 +1,7 @@
 class PufferFishYellow extends Enemy {
+    height = 70;
+    width = 90;
+
     IMAGES_PUFFER_FISH = [
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
@@ -29,14 +32,20 @@ class PufferFishYellow extends Enemy {
         'assets/img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png'
     ];
 
-    constructor() {
+    constructor(x) {
         super().loadImage(this.IMAGES_PUFFER_FISH[0]);
         this.loadImages(this.IMAGES_PUFFER_FISH);
         this.loadImages(this.IMAGES_PUFFER_FISH_TRANSITION);
         this.loadImages(this.IMAGES_PUFFER_FISH_BIG);
         this.loadImages(this.IMAGES_PUFFER_FISH_DEAD);
+        this.IMAGES_PUFFER_FISH_CYCLE = [
+            ...this.IMAGES_PUFFER_FISH,
+            ...this.IMAGES_PUFFER_FISH_TRANSITION,
+            ...this.IMAGES_PUFFER_FISH_BIG,
+            ...[...this.IMAGES_PUFFER_FISH_TRANSITION].reverse()
+        ];
 
-        this.x = 400 + Math.random() * 500; // zahl zwischen 400 und 700
+        this.x = x !== undefined ? x : 1400 + Math.random() * 500;
         this.y = 100 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.5;
         this.frameOffset = {
@@ -49,11 +58,13 @@ class PufferFishYellow extends Enemy {
     }
 
     animate() {
-        setInterval(() => {
+        this.moveInterval = setInterval(() => {
+            if (world && world.isPaused) return;
             this.moveLeft();
         }, 1000 / 60);
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_PUFFER_FISH);
+        this.animInterval = setInterval(() => {
+            if (world && world.isPaused) return;
+            this.playAnimation(this.IMAGES_PUFFER_FISH_CYCLE);
         }, 250);
     }
 }

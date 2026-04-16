@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <title>Sharkie</title>
-    <link rel="icon" href="./assets/img/1.Sharkie/1.IDLE/1.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="./assets/favicon/favicon.ico" sizes="48x48">
+    <link rel="icon" href="./assets/favicon/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="./assets/favicon/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="./assets/favicon/site.webmanifest">
     <link rel="stylesheet" href="./style.css">
     <script src="./models/world/world.class.js"></script>
     <script src="./models/world/level.class.js"></script>
@@ -25,36 +29,117 @@
     <script src="./models/collectable/coin.class.js"></script>
     <script src="./models/collectable/poison.class.js"></script>
     <script src="./models/enemy/enemy.class.js"></script>
-    <script src="./models/enemy/jelly-fish.class.js"></script>
+    <script src="./models/enemy/jelly-fish-purple.class.js"></script>
+    <script src="./models/enemy/jelly-fish-yellow.class.js"></script>
     <script src="./models/enemy/puffer-fish-green.class.js"></script>
     <script src="./models/enemy/puffer-fish-red.class.js"></script>
     <script src="./models/enemy/puffer-fish-yellow.class.js"></script>
     <script src="./models/enemy/endboss.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./levels/level2.js"></script>
+    <script src="./levels/level3.js"></script>
+    <script src="./levels/level4.js"></script>
     <script src="./js/game.js"></script>
 </head>
 <body>
-    <h1>Sharkie</h1>
-
-    <div id="fullscreen">
-        <canvas width="720" height="480" id="canvas">
-
-        </canvas>
-    </div>
-
-    <div class="start-container" id="startContainer">
+    <header>
         <h1>Sharkie</h1>
-        <div class="startscreen" id="startscreen">
-            <h2>Sharkie</h2>
-            <button onclick="startGame()">Start Game</button>
-            <button onclick="openOverlay()">Options</button>
-        </div>
-    </div>
+    </header>
+    <main>
+        <article id="fullscreen">
+            <canvas width="720" height="480" id="canvas" class="d-none"></canvas>
+            <div class="canvas-icons">
+                <button><img src="./assets/icons/home.svg" alt="Home" id="homeIcon" onclick="goToHome()"></button>
+                <button><img src="./assets/icons/fullscreen.svg" alt="Fullscreen" id="fullscreenIcon" onclick="toggleFullscreen()"></button>
+                <button><img src="./assets/icons/sound-off.svg" alt="Sound Toggle" id="soundToggleIcon" onclick="toggleMusic()"></button>
+                <button><img src="./assets/icons/pause.svg" alt="Play Toggle" id="playToggleIcon" onclick="togglePlayPauseGame()"></button>
+            </div>
+            <canvas id="confetti-canvas" class="d-none"></canvas>
+            <section class="d-none" id="win-screen">
+                <h1>You Win!</h1>
+                <button id="win-btn" onclick="restartGame()">Try Again</button>
+            </section>
+            <section class="d-none" id="game-over">
+                <h1>Game Over</h1>
+                <button onclick="restartGame()">Try Again</button>
+            </section>
+        </article>
+    
+        <article class="startscreen" id="startscreen">
+            <div class="button-group">
+                <button onclick="startGame()">Start Game</button>
+                <button onclick="toggleOverlay('optionsScreen')">Options</button>
+                <button onclick="toggleOverlay('imprint')">Imprint</button>
+            </div>
+        </article>
 
-    <button onclick="fullscreen()">
-        <img src="./assets/img/fullscreen.svg" alt="fullscreen">
-    </button>
+        <article class="overlay d-none" id="optionsScreen">
+            <div class="overlay-content">
+                <h2>Options</h2>
+                <section class="game-controls" id="gameControls">
+                    <h3>Game Controls</h3>
+                    <div class="controls-wrapper">
+                        <div class="control-set">
+                            <div class="arrow-keys">
+                                <div class="key up"><span>▲</span></div>
+                                <div class="row">
+                                    <div class="key left"><span>◀</span></div>
+                                    <div class="key down"><span>▼</span></div>
+                                    <div class="key right"><span>▶</span></div>
+                                </div>
+                            </div>
+                            <span class="label">Move Shark</span>
+                        </div>
+                        <div class="control-set">
+                            <div class="wasd-keys">
+                                <div class="key w"><span>W</span></div>
+                                <div class="row">
+                                    <div class="key a"><span>A</span></div>
+                                    <div class="key s"><span>S</span></div>
+                                    <div class="key d"><span>D</span></div>
+                                </div>
+                            </div>
+                            <span class="label">Move Shark</span>
+                        </div>
+                        <div class="control-set">
+                            <div class="key f"><span>F</span></div>
+                            <span class="label">Bubble Attack</span>
+                        </div>
+                        <div class="control-set">
+                            <div class="space-bar">SPACE BAR</div>
+                            <span class="label">Fin Slap Attack</span>
+                        </div>
+                    </div>
+                </section>
+                <section class="instructions" id="instructions">
+                    <h3>Game Instructions</h3>
+                    <p>Use the arrow keys or WASD to move your character.</p>
+                    <p>Press Space to attack with your fin and F to throw objects.</p>
+                </section>
+                <section class="about" id="about">
+                    <h3>About the Game</h3>
+                    <p>Sharkie is an 2D underwater adventure game where you control a shark navigating through various levels, collecting coins and avoiding enemies.</p>
+                    <p>Developed by Nathalie Dorendorf, this game showcases basic game mechanics and object-oriented programming principles.</p>
+                </section>
+                <section class="contact" id="contact">
+                    <h3>Contact</h3>
+                    <p>If you have any questions or feedback, feel free to reach out via email at <a href="mailto:dorendorfnathalie@gmail">dorendorfnathalie@gmail.com</a></p>
+                </section>
+                <img src="./assets/icons/close.svg" alt="Close" id="close" onclick="toggleOverlay('optionsScreen')">
+            </div>
+        </article>
 
+
+        <section class="overlay d-none" id="imprint">
+            <div class="overlay-content">
+                <h2>Imprint</h2>
+                <p>Imprint details go here.</p>
+                <img src="./assets/icons/close.svg" alt="Close" id="close" onclick="toggleOverlay('imprint')">
+            </div>
+        </section>
+    </main>
+    <footer>
+        Copyright &copy; 2026 Nathalie Dorendorf. All rights reserved.
+    </footer>
 </body>
 </html>

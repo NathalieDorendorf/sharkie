@@ -29,24 +29,15 @@ body {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 5rem;
     padding: 2rem;
+    color: rgb(195, 0, 121);
+    text-shadow: 7px 6px 0px rgba(255, 255, 255, 1.0);
 }
 
 canvas {
     background-color: black;
     display: block;
-}
-
-.start-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100%;
-    top: -1.2em;
 }
 
 .startscreen {
@@ -65,37 +56,276 @@ canvas {
 }
 
 button {
-    background-color: #C30079; /* Magenta Hintergrund */
-    color: white; /* Weiße Schrift */
-    font-size: 24px; /* Schriftgröße */
-    font-weight: bold; /* Fette Schrift */
-    text-transform: uppercase; /* Großbuchstaben */
-    border: 4px solid white; /* Weißer Rand */
-    border-radius: 20px; /* Abgerundete Ecken */
-    padding: 10px 30px; /* Innenabstand */
-    cursor: pointer; /* Hand-Cursor */
-    font-family: 'LuckiestGuy-Regular', Arial, sans-serif; /* Deine Schriftart */
-    letter-spacing: 2px; /* Abstand zwischen Buchstaben */
-    
-    /* Text richtig zentrieren */
+    background-color: rgb(195, 0, 121);
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 4px solid white;
+    border-radius: 20px;
+    padding: 0.5em;
+    cursor: pointer;
+    font-family: 'LuckiestGuy-Regular', Arial, sans-serif;
+    letter-spacing: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-
-    /* 3D-Effekt mit grauem Schatten */
-    box-shadow: 0px 4px 0px #666; 
+    box-shadow: 0px 4px 0px #666;
     transition: all 0.2s ease-in-out;
 }
 
-button:active {
-    box-shadow: 0px 2px 0px #666; /* Schatten verkleinern beim Klicken */
-    transform: translateY(2px); /* Button leicht nach unten drücken */
+button:hover {
+    background-color: #a00065;
+    box-shadow: 0px 6px 0px #666;
+    transform: translateY(-2px);
 }
 
-d-none {
-    display: none;
+button:active {
+    box-shadow: 0px 2px 0px #666;
+    transform: translateY(2px);
 }
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.startscreen button,
+#win-screen button,
+#game-over button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 260px;
+}
+
+.canvas-icons {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    z-index: 101;
+}
+
+.canvas-icons button:focus {
+    outline: none;
+}
+
+.canvas-icons img {
+    width: 1em;
+    height: 1em;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.overlay-content {
+    position: relative;
+    color: rgb(255, 255, 255);
+    background-color: rgb(195, 0, 121);
+    padding: 2rem;
+    border-radius: 20px;
+    max-height: 80%;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+
+.overlay-content section {
+    margin-bottom: 2rem;
+}
+
+.overlay-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.overlay-content h3 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+.overlay-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0.5rem 0 1rem;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.overlay-content a {
+    color: rgb(126,247,220);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.overlay-content button:hover {
+    background-color: #a00065;
+}
+
+.overlay-content img#close {
+    margin-top: 1rem;
+}
+
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.control-set {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.arrow-keys,
+.wasd-keys {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.arrow-keys .row,
+.wasd-keys .row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.key {
+    width: 60px;
+    height: 60px;
+    background-color: #73f7e7;
+    color: #37006b;
+    font-size: 1.8rem;
+    border: 4px solid white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 0 #37006b;
+    user-select: none;
+    font-weight: bold;
+    font-family: 'LuckiestGuy-Regular', Arial, sans-serif;
+    text-shadow: none;
+}
+
+.space-bar {
+    background-color: #73f7e7;
+    color: #37006b;
+    font-size: 1.5rem;
+    border: 4px solid white;
+    border-radius: 20px;
+    padding: 1rem 4rem;
+    font-weight: bold;
+    box-shadow: 0 4px 0 #37006b;
+    letter-spacing: 1px;
+    text-align: center;
+    user-select: none;
+    font-family: 'LuckiestGuy-Regular', Arial, sans-serif;
+    text-shadow: none;
+}
+
+.label {
+    color: white;
+    text-shadow: 2px 2px 0 #37006b;
+    font-size: 1.4rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    width: 100%;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    font-size: 0.7em;
+}
+
+.d-none {
+    display: none !important;
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99;
+    background: transparent;
+}
+
+#win-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
 
 @media only screen and (max-width: 720px) {
     canvas {
@@ -108,3 +338,4 @@ d-none {
         height: 100vh;
     }
 }
+

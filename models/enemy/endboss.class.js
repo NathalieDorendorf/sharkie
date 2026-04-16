@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-    x = 2300;
+    x = 4500;
     y = 0;
     width = 500;
     height = 500;
@@ -59,6 +59,11 @@ class Endboss extends MovableObject {
         'assets/img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png'
     ];
 
+    energy = 100;
+    isAttacking = false;
+    isHurt = false;
+    startX = 4500;
+
     constructor() {
         super().loadImage(this.IMAGES_ENDBOSS_INTRODUCE[0]);
         this.loadImages(this.IMAGES_ENDBOSS_INTRODUCE);
@@ -76,25 +81,83 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        let i = 0;
-        let hadFirstContact = false;
-        setInterval(() => {
-            if (world.character.x >= 2000 && i < 10) {
+        let introCount = 0;
+        let introInterval = setInterval(() => {
+            if (world && world.isPaused) return;
+            if (world.character.x >= 4000) {
                 this.isActive = true;
                 this.playAnimation(this.IMAGES_ENDBOSS_INTRODUCE);
-                i++;
-            } else if (this.isActive) {
-                this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
-            }
-            if (world.character.x > 2000 && !hadFirstContact) {
-                i = 10;
-                hadFirstContact = true;
+                introCount++;
+                if (introCount >= this.IMAGES_ENDBOSS_INTRODUCE.length) {
+                    clearInterval(introInterval);
+                    this.startBehavior();
+                }
             }
         }, 250);
     }
 
+    startBehavior() {
+        setInterval(() => {
+            if (world && world.isPaused) return;
+            if (this.isDead) {
+                this.playAnimation(this.IMAGES_ENDBOSS_DEAD);
+            } else if (this.isHurt) {
+                this.playAnimation(this.IMAGES_ENDBOSS_HURT);
+            } else if (this.isAttacking) {
+                this.playAnimation(this.IMAGES_ENDBOSS_ATTACK);
+            } else {
+                this.playAnimation(this.IMAGES_ENDBOSS_FLOATING);
+            }
+        }, 200);
+
+        setInterval(() => {
+            if (world && world.isPaused) return;
+            if (!this.isDead && !this.isHurt) {
+                this.attack();
+            }
+        }, 3000);
+    }
+
     attack() {
-        console.log('attacking');
-        
+        this.isAttacking = true;
+        let rushInterval = setInterval(() => {
+            if (world && world.isPaused) return;
+            this.x -= 15;
+        }, 1000 / 60);
+
+        setTimeout(() => {
+            clearInterval(rushInterval);
+            this.isAttacking = false;
+            let returnInterval = setInterval(() => {
+                if (world && world.isPaused) return;
+                if (this.x < this.startX) {
+                    this.x += 8;
+                } else {
+                    clearInterval(returnInterval);
+                }
+            }, 1000 / 60);
+        }, 800);
+    }
+
+    hit() {
+        if (this.isDead || this.isHurt) return;
+        this.energy -= 34;
+        if (this.energy <= 0) {
+            this.energy = 0;
+            this.die();
+        } else {
+            this.isHurt = true;
+            world.statusBarEndboss.setPercentage(this.energy);
+            setTimeout(() => { this.isHurt = false; }, 1000);
+        }
+    }
+
+    die() {
+        this.isDead = true;
+        world.statusBarEndboss.setPercentage(0);
+        setTimeout(() => {
+            world.stopGame();
+            world.showWinScreen();
+        }, 2000);
     }
 }

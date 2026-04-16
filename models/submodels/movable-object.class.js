@@ -84,13 +84,13 @@ class MovableObject extends DrawableObject {
     collectCoin(index) {
         this.world.level.coins.splice(index, 1); // Münze aus dem Array entfernen
         this.collectedCoins++; // Anzahl der gesammelten Münzen erhöhen
-        this.world.statusBarCoin.setPercentage(this.collectedCoins * 10); // Status-Bar updaten
+        this.world.statusBarCoin.setPercentage(this.collectedCoins * 5); // Status-Bar updaten
     }
 
     collectPoison(index) {
         this.world.level.poison.splice(index, 1); // Gift aus dem Array entfernen
         this.collectedPoison++; // Anzahl der gesammelten Giftflaschen erhöhen
-        this.world.statusBarPoison.setPercentage(this.collectedPoison * 10); // Status-Bar updaten
+        this.world.statusBarPoison.setPercentage(this.collectedPoison * 5); // Status-Bar updaten
     }
 
     hit() {
@@ -123,33 +123,31 @@ class MovableObject extends DrawableObject {
 
     die() {
         this.isDead = true;
-        this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD); // Dead-Animation starten
-
-        // Richtung bestimmen (entgegen der Bewegungsrichtung des Charakters)
-        let direction = this.world.character.otherDirection ? 1 : -1; // Falls Charakter nach links schaut -> Gegner fliegt nach rechts
-
+        this.clearIntervals();
+        this.playAnimation(this.IMAGES_PUFFER_FISH_DEAD);
+        let direction = world.character.otherDirection ? 1 : -1;
         setTimeout(() => {
             this.flyOutOfCanvas(direction);
-        }, 500); // 500ms warten, bevor der Gegner wegfliegt
+        }, 500);
+    }
+
+    clearIntervals() {
+        if (this.moveInterval) { clearInterval(this.moveInterval); this.moveInterval = null; }
+        if (this.animInterval) { clearInterval(this.animInterval); this.animInterval = null; }
     }
 
     flyOutOfCanvas(direction) {
         let flyInterval = setInterval(() => {
-            this.x += 10 * direction; // Gegner fliegt in die bestimmte Richtung
-            this.y -= 5; // Gegner steigt nach oben
-
-            // Wenn Gegner aus dem Canvas ist, entfernen
-            if (this.x < -200 || this.x > this.world.level.level_end_x + 200 || this.y < -200) {
+            this.x += 10 * direction;
+            this.y -= 5;
+            if (this.x < -200 || this.x > world.level.level_end_x + 200 || this.y < -200) {
                 clearInterval(flyInterval);
-                let index = this.world.level.enemies.indexOf(this);
+                let index = world.level.enemies.indexOf(this);
                 if (index > -1) {
-                    this.world.level.enemies.splice(index, 1);
+                    world.level.enemies.splice(index, 1);
                 }
             }
-        }, 50); // Bewegung alle 50ms updaten
+        }, 50);
     }
 
-    isDead() {
-        return this.energy == 0;
-    }
 }
